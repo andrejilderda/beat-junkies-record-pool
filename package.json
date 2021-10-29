@@ -21,7 +21,9 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@types/styled-components": "^5.1.15"
+    "@types/styled-components": "^5.1.15",
+    "json-server": "^0.17.0",
+    "prettier": "2.4.1"
   },
   "scripts": {
     "start": "concurrently \"npm run dev\" \"npm run start:track-server\" \"npm run start:db-server\"",
