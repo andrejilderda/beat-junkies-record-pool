@@ -1,0 +1,181 @@
+{
+  "lastFetchedDate": [
+    "2021-10-28T22:00:00.000Z"
+  ],
+  "tracks": [
+    {
+      "dateAdded": "2013-12-31T23:00:00.000Z",
+      "track": "Act Too",
+      "artist": "The Roots",
+      "genre": "Hip Hop 90s x Golden Era",
+      "bpm": "95",
+      "year": "1999",
+      "versions": [
+        {
+          "tag": "(Love Of My Life ft. Common IntroDJ Dynamite edit)",
+          "id": "40819",
+          "streamId": "40818"
+        }
+      ],
+      "id": 0
+    },
+    {
+      "dateAdded": "2014-06-07T22:00:00.000Z",
+      "track": "Gentle Smiles",
+      "artist": "Gary Bartz",
+      "genre": "Soul x Boogie x Jazz",
+      "bpm": "93",
+      "year": "1975",
+      "versions": [
+        {
+          "tag": "(Saxy DJ Day EDIT)",
+          "id": "36056",
+          "streamId": "36055"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "dateAdded": "2014-07-03T22:00:00.000Z",
+      "track": "She Came To Give It To You",
+      "artist": "Pharrell",
+      "genre": "Commercial Hip Hop x R&B",
+      "bpm": "120",
+      "year": "2014",
+      "versions": [
+        {
+          "tag": "(Clean-Cyber QH Intro)",
+          "id": "29138",
+          "streamId": "29136"
+        }
+      ],
+      "id": 2
+    },
+    {
+      "dateAdded": "2014-07-05T22:00:00.000Z",
+      "track": "Draft Day",
+      "artist": "Drake",
+      "genre": "Commercial Hip Hop x R&B",
+      "bpm": "83",
+      "year": "2014",
+      "versions": [
+        {
+          "tag": "(Dirty)",
+          "id": "16126",
+          "streamId": "16124"
+        }
+      ],
+      "id": 3
+    },
+    {
+      "dateAdded": "2014-07-05T22:00:00.000Z",
+      "track": "Fancy",
+      "artist": "Drake feat Swizz Beatz",
+      "genre": "Commercial Hip Hop x R&B",
+      "bpm": "87",
+      "year": "2010",
+      "versions": [
+        {
+          "tag": "(Dirty Intro)",
+          "id": "16743",
+          "streamId": "16741"
+        }
+      ],
+      "id": 4
+    },
+    {
+      "dateAdded": "2014-07-06T22:00:00.000Z",
+      "track": "Stylus Breaks 9",
+      "artist": "Noisy Stylus",
+      "genre": "Scratch Tools x Battle Breaks",
+      "bpm": "99",
+      "year": "2005",
+      "versions": [
+        {
+          "id": "21163",
+          "streamId": "21162"
+        }
+      ],
+      "id": 5
+    },
+    {
+      "dateAdded": "2014-07-11T22:00:00.000Z",
+      "track": "Wu Tang Forever",
+      "artist": "Drake",
+      "genre": "Commercial Hip Hop x R&B",
+      "bpm": "50",
+      "year": "2013",
+      "versions": [
+        {
+          "tag": "(Dirty Intro)",
+          "id": "12664",
+          "streamId": "12662"
+        },
+        {
+          "tag": "(Clean Intro)",
+          "id": "12661",
+          "streamId": "12659"
+        }
+      ],
+      "id": 6
+    },
+    {
+      "dateAdded": "2014-07-11T22:00:00.000Z",
+      "track": "All Gold Everything",
+      "artist": "Trinidad James feat T.I. 2 Chainz & Young Jeezy",
+      "genre": "Commercial Trap",
+      "bpm": "50",
+      "year": "2012",
+      "versions": [
+        {
+          "tag": "(Remix Clean Intro)",
+          "id": "12667",
+          "streamId": "12665"
+        },
+        {
+          "tag": "(Remix Dirty Intro)",
+          "id": "12657",
+          "streamId": "12655"
+        }
+      ],
+      "id": 7
+    },
+    {
+      "dateAdded": "2014-07-11T22:00:00.000Z",
+      "track": "Levels",
+      "artist": "Meek Mill",
+      "genre": "Commercial Trap",
+      "bpm": "53",
+      "year": "2013",
+      "versions": [
+        {
+          "tag": "(Beat Junkie Sound edit  Dirty intro)",
+          "id": "12679",
+          "streamId": "12677"
+        }
+      ],
+      "id": 8
+    },
+    {
+      "dateAdded": "2014-07-11T22:00:00.000Z",
+      "track": "Too Much",
+      "artist": "Que feat Lizzie & Trey Songz",
+      "genre": "Commercial Trap",
+      "bpm": "53",
+      "year": "2014",
+      "versions": [
+        {
+          "tag": "(Dirty Intro)",
+          "id": "12690",
+          "streamId": "12688"
+        },
+        {
+          "tag": "(Clean Intro)",
+          "id": "12670",
+          "streamId": "12668"
+        }
+      ],
+      "id": 9
+    }
+  ]
+}

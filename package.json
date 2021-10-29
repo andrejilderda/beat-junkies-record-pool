@@ -24,8 +24,9 @@
     "@types/styled-components": "^5.1.15"
   },
   "scripts": {
-    "start": "concurrently \"npm run dev\" \"npm run start:server\"",
-    "start:server": "json-server src/crate-minimal.json --port 3001",
+    "start": "concurrently \"npm run dev\" \"npm run start:track-server\" \"npm run start:db-server\"",
+    "start:track-server": "json-server src/db/crate-minimal.json --port 3001",
+    "start:db-server": "json-server src/db/db.json --port 3002",
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
