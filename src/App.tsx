@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import './App.css';
 import { Virtuoso } from 'react-virtuoso';
 import { useMutation, useQuery } from 'react-query';
+import 'react-h5-audio-player/lib/styles.css';
 import { unique } from './utils';
-import Track from './Track';
+import Track from './components/Track/Track';
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/styles';
+import { StyledAudioPlayer } from './components/AudioPlayer/AudioPlayer';
+import * as S from './App.styled';
+import SearchField from './components/SearchField/SearchField';
 
 interface Version {
   id: string;
@@ -21,7 +26,12 @@ export interface CrateItem {
 }
 
 function App() {
+  const [colorScheme, setColorScheme] = useState('dark');
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   const [filter, setFilter] = useState('');
+  const [trackUrl, setTrackUrl] = useState<string | undefined>(undefined);
+
   const { isLoading, error, data } = useQuery<CrateItem[], Error>(
     ['crate', filter],
     () =>
@@ -36,41 +46,51 @@ function App() {
     ? unique(data?.map(item => item.genre || 'none')).sort()
     : [];
 
+  const onTrackChangeHandler = (versionId: string, streamId: string) => {
+    setTrackUrl(`https://beatjunkies.com/stream/?idattachment=${versionId}&nocopy=${streamId}.mp3`);
+  }
+
+
   return (
-    <div className="List">
-      <figure>
-        <figcaption>Listen to the T-Rex:</figcaption>
-        <audio
-          controls
-          src="https://beatjunkies.com/stream/?idattachment=425588&nocopy=425587.mp3"
-        >
-          Your browser does not support the
-          <code>audio</code> element.
-        </audio>
-      </figure>
-      {data?.length}
-      <input
-        type="text"
-        placeholder="filter..."
-        value={filter}
-        onChange={e => setFilter(e.target.value)}
-      />
-      {isLoading ? (
-        'Loading...'
-      ) : (
-        <>
-          <Virtuoso
-            totalCount={data?.length}
-            data={data}
-            itemContent={(index, item: CrateItem) => (
-              <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                <Track {...item} key={item.id} />
-              </div>
+    <ColorSchemeProvider colorScheme='dark' toggleColorScheme={toggleColorScheme}>
+      <MantineProvider theme={{
+        fontFamily: 'Open Sans',
+        colorScheme: 'dark'
+      }}>
+        <S.Layout>
+          <div style={{ flex: '0 0 auto', padding: '0 16px' }}>
+            {data?.length}
+            <SearchField />
+            <input
+              type="text"
+              placeholder="filter..."
+              value={filter}
+              onChange={e => setFilter(e.target.value)}
+            />
+          </div>
+          <div style={{ flex: '1', padding: '0 16px' }}>
+            {isLoading ? (
+              'Loading...'
+            ) : (
+              <>
+                <Virtuoso
+                  totalCount={data?.length}
+                  data={data}
+                  itemContent={(index, item: CrateItem) => (
+                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <Track {...item} key={item.id} onTrackChangeHandler={onTrackChangeHandler} />
+                    </div>
+                  )}
+                />
+              </>
             )}
-          />
-        </>
-      )}
-    </div>
+          </div>
+          <div style={{ flex: '0' }}>
+            <StyledAudioPlayer src={trackUrl} customVolumeControls={[]} customAdditionalControls={[]} showSkipControls={true} layout="horizontal-reverse" progressJumpSteps={{ forward: 15000, backward: 15000 }} />
+          </div>
+        </S.Layout>
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 }
 

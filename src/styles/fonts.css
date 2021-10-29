@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url(../fonts/PlusJakartaSans-Light.woff2) format('woff2'),
+    url(../fonts/PlusJakartaSans-Light.woff) format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url(../fonts/PlusJakartaSans-LightItalic.woff2) format('woff2'),
+    url(../fonts/PlusJakartaSans-LightItalic.woff) format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url(../fonts/PlusJakartaSans-Regular.woff2) format('woff2'),
+    url(../fonts/PlusJakartaSans-Regular.woff) format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url(../fonts/PlusJakartaSans-Italic.woff2) format('woff2'),
+    url(../fonts/PlusJakartaSans-Italic.woff) format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url(../fonts/PlusJakartaSans-Medium.woff2) format('woff2'),
+    url(../fonts/PlusJakartaSans-Medium.woff) format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url(../fonts/PlusJakartaSans-MediumItalic.woff2) format('woff2'),
+    url(../fonts/PlusJakartaSans-MediumItalic.woff) format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url(../fonts/PlusJakartaSans-Bold.woff2) format('woff2'),
+    url(../fonts/PlusJakartaSans-Bold.woff) format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url(../fonts/PlusJakartaSans-BoldItalic.woff2) format('woff2'),
+    url(../fonts/PlusJakartaSans-BoldItalic.woff) format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
