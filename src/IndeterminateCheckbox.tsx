@@ -12,15 +12,9 @@ const IndeterminateCheckbox = (props: IndeterminateCheckboxProps) => {
     if (!checkRef?.current) return;
     checkRef.current.checked = value === 'CHECKED';
     checkRef.current.indeterminate = value === 'INDETERMINATE';
-  }, [value])
+  }, [value]);
 
-  return (
-    <input
-      type="checkbox"
-      ref={checkRef}
-      {...otherProps}
-    />
-  )
-}
+  return <input type="checkbox" ref={checkRef} {...otherProps} />;
+};
 
 export default IndeterminateCheckbox;
