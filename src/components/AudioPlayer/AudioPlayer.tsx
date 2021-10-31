@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 export const StyledAudioPlayer = styled(AudioPlayer)`
   background: var(--dark-7);
+  flex: 0;
 
   .rhap_controls-section {
     flex: 0;
