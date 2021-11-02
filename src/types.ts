@@ -20,4 +20,9 @@ export interface DbItem {
   status: 'reviewed' | 'queue' | 'downloaded';
 }
 
-export type OnTrackChangeHandler = (e: React.MouseEvent, version: Version) => void;
+export interface AudioPlayerTrack {
+  id: CrateItem['id'];
+  version: Version | undefined;
+}
+
+export type OnTrackChangeHandler = (e: React.MouseEvent, track: AudioPlayerTrack) => void;

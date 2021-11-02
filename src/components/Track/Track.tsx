@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
-import { ActionIcon, Badge } from '@mantine/core';
+import {
+  ActionIcon,
+  Badge,
+  useMantineColorScheme,
+  useMantineTheme,
+} from '@mantine/core';
 import {
   PlayCircle,
   Play,
@@ -10,7 +15,13 @@ import {
   MinusCircle,
   CheckCircle,
 } from 'phosphor-react';
-import { CrateItem, Version, OnTrackChangeHandler, DbItem } from '../../types';
+import {
+  CrateItem,
+  Version,
+  OnTrackChangeHandler,
+  DbItem,
+  AudioPlayerTrack,
+} from '../../types';
 import * as S from './Track.styled';
 import useMutateTrack from '../../hooks/useMutateTrack';
 import TrackButton from '../TrackButton/TrackButton';
@@ -20,7 +31,7 @@ interface TrackProps extends CrateItem {
   selected: boolean;
   onClick: React.MouseEventHandler<HTMLDivElement> | undefined;
   isPlaying: boolean;
-  currentAudioPlayerTrack: Version | undefined;
+  currentAudioPlayerTrack: AudioPlayerTrack | undefined;
   dbStatus: DbItem | undefined;
 }
 
@@ -38,6 +49,10 @@ const Track = ({
   dbStatus,
 }: TrackProps) => {
   const { mutate } = useMutateTrack();
+  const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  console.log('colorScheme', colorScheme);
+
   const updateStatus = (status: DbItem['status'] | 'remove') =>
     mutate({
       id,
@@ -52,7 +67,7 @@ const Track = ({
     version: Version = versions[0],
   ) => {
     e.stopPropagation();
-    onTrackChangeHandler(e, version);
+    onTrackChangeHandler(e, { id, version });
   };
 
   const isInQueue = dbStatus?.status === 'queue';
@@ -61,20 +76,27 @@ const Track = ({
   return (
     <>
       {/* <IndeterminateCheckbox value="INDETERMINATE" /> */}
-      <S.Wrapper selected={selected} onClick={onClick}>
+      <S.Wrapper
+        selected={selected}
+        onClick={onClick}
+        $palette={theme.colors}
+        $colorScheme={colorScheme}
+        $isInQueue={isInQueue}
+        $isReviewed={isReviewed}
+      >
         <S.Songwrapper>
           <S.TrackButtonWrapper>
             <TrackButton
               isOn={isReviewed}
               onClick={() => updateStatus(isReviewed ? 'remove' : 'reviewed')}
               onIcon={<CheckCircle weight="fill" size={24} />}
-              offIcon={<Circle size={24} />}
+              offIcon={<Circle weight="light" size={24} />}
             />
             <TrackButton
               isOn={isInQueue}
               onClick={() => updateStatus(isInQueue ? 'remove' : 'queue')}
-              onIcon={<MinusCircle size={24} />}
-              offIcon={<PlusCircle size={24} />}
+              onIcon={<MinusCircle weight="light" size={24} />}
+              offIcon={<PlusCircle weight="light" size={24} />}
             />
           </S.TrackButtonWrapper>
           <S.PlayIcon
@@ -86,7 +108,13 @@ const Track = ({
             {isPlaying ? <Pause /> : <Play />}
           </S.PlayIcon>
           <div>
-            <S.Title $isPlaying={isPlaying}>{track}</S.Title>
+            <S.Title
+              $isPlaying={isPlaying}
+              $palette={theme.colors}
+              $colorScheme={colorScheme}
+            >
+              {track}
+            </S.Title>
             <S.Artist>{artist}</S.Artist>
           </div>
         </S.Songwrapper>
@@ -105,7 +133,8 @@ const Track = ({
                   }
                   leftSection={
                     <ActionIcon>
-                      {isPlaying && version === currentAudioPlayerTrack ? (
+                      {isPlaying &&
+                      version === currentAudioPlayerTrack?.version ? (
                         <PauseCircle size={24} />
                       ) : (
                         <PlayCircle size={24} />

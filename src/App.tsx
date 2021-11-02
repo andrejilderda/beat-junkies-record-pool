@@ -1,34 +1,38 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react';
-import './App.css';
+import React, { RefObject, useRef, useState } from 'react';
+import 'styled-components/macro';
 import { Virtuoso } from 'react-virtuoso';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import 'react-h5-audio-player/lib/styles.css';
 import { unique } from './utils';
 import Track from './components/Track/Track';
-import {
-  ColorScheme,
-  ColorSchemeProvider,
-  MantineProvider,
-} from '@mantine/styles';
+import { useMantineColorScheme } from '@mantine/styles';
+import { ActionIcon, Group, Loader } from '@mantine/core';
 import { StyledAudioPlayer } from './components/AudioPlayer/AudioPlayer';
 import * as S from './App.styled';
-import SearchField from './components/SearchField/SearchField';
 import useSelection, { PivotReducerState } from 'react-selection-hooks';
-import { CrateItem, DbItem, OnTrackChangeHandler, Version } from './types';
+import SearchField from './components/SearchField/SearchField';
+import {
+  CrateItem,
+  DbItem,
+  OnTrackChangeHandler,
+  AudioPlayerTrack,
+} from './types';
 import H5AudioPlayer from 'react-h5-audio-player';
-import useMutateTrack from './hooks/useMutateTrack';
+import { Moon } from 'phosphor-react';
+import Keybindings from './components/Keybindings/Keybindings';
+import Queue from './components/Queue/Queue';
 
 const getKey = (item: CrateItem) => item.id;
 
 function App() {
-  const [colorScheme, setColorScheme] = useState('dark');
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+  const { toggleColorScheme } = useMantineColorScheme();
   const [filter, setFilter] = useState('');
-  const [audioPlayerTrack, setAudioPlayerTrack] = useState<Version | undefined>(
-    undefined,
-  );
+  const [audioPlayerTrack, setAudioPlayerTrack] = useState<
+    AudioPlayerTrack | undefined
+  >(undefined);
+  const playerRef = useRef<H5AudioPlayer>();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [queueOpen, setQueueOpen] = useState(false);
   const { isLoading, error, data } = useQuery<CrateItem[], Error>(
     ['crate', filter],
     () =>
@@ -43,96 +47,119 @@ function App() {
     ),
   );
 
-  console.log('db', db);
-
   const { selectedItems, selectAll, clearSelection, isSelected, onSelect } =
     useSelection<CrateItem, PivotReducerState<CrateItem>>(data || [], {
       getKey,
     });
-  console.log('selectedItems', selectedItems);
-
-  const playerRef = useRef<H5AudioPlayer>();
-
-  if (error) return <>An error has occurred: {error.message}</>;
 
   const genres = Array.isArray(data)
     ? unique(data?.map(item => item.genre || 'none')).sort()
     : [];
 
-  const onTrackChangeHandler: OnTrackChangeHandler = (e, version) => {
-    if (audioPlayerTrack === version) {
+  const onTrackChangeHandler: OnTrackChangeHandler = (e, track) => {
+    if (audioPlayerTrack?.version === track.version) {
       playerRef.current?.togglePlay(e);
       setIsPlaying(prevState => !prevState);
-    } else setAudioPlayerTrack(version);
+    } else setAudioPlayerTrack(track);
   };
 
+  if (error)
+    return <>An error has occurred while fetching tracks: {error.message}</>;
+
   return (
-    <ColorSchemeProvider
-      colorScheme="dark"
-      toggleColorScheme={toggleColorScheme}
-    >
-      <MantineProvider
-        theme={{
-          fontFamily: 'Open Sans',
-          colorScheme: 'dark',
-        }}
-      >
-        <S.Layout>
-          <div style={{ flex: '0 0 auto', padding: '0 16px' }}>
-            {data?.length}
-            <SearchField
-              value={filter}
-              onChange={e => setFilter(e.target.value)}
+    <>
+      <Keybindings
+        playerRef={playerRef}
+        clearSelection={clearSelection}
+        selectAll={selectAll}
+      />
+      <S.Layout>
+        <div
+          css={`
+            flex: 0 0 auto;
+            padding: 0 16px;
+          `}
+        >
+          <Group position="right" withGutter>
+            <ActionIcon
+              size="lg"
+              variant="filled"
+              onClick={() => toggleColorScheme()}
+            >
+              <Moon size={20} />
+            </ActionIcon>
+            <Queue
+              title="Download queue"
+              opened={queueOpen}
+              queue={selectedItems}
+              setOpen={setQueueOpen}
+              onClose={() => setQueueOpen(false)}
+              padding="xl"
+              size="xl"
+              position="right"
+              overlayColor="rgba(0,0,0,0.9)"
+              shadow="xl"
             />
-          </div>
-          <button onClick={() => selectAll()}>All</button>
-          <button onClick={() => clearSelection()}>Clear</button>
-          <div style={{ flex: '1', padding: '0 16px' }}>
-            {isLoading ? (
-              'Loading...'
-            ) : (
-              <Virtuoso
-                totalCount={data?.length}
-                data={data}
-                itemContent={(index, item: CrateItem) => (
-                  <Track
-                    key={item.id}
-                    onClick={(e: any) => onSelect(item, e)}
-                    onTrackChangeHandler={onTrackChangeHandler}
-                    selected={isSelected(item)}
-                    isPlaying={
-                      isPlaying &&
-                      !!item.versions.find(
-                        item => item.id === audioPlayerTrack?.id,
-                      )
-                    }
-                    dbStatus={db?.find(dbItem => dbItem.id === item.id)}
-                    currentAudioPlayerTrack={audioPlayerTrack}
-                    {...item}
-                  />
-                )}
+          </Group>
+
+          <SearchField
+            value={filter}
+            onChange={e => setFilter(e.target.value)}
+            rightSection={
+              isLoading ? (
+                <Loader
+                  size="sm"
+                  color="blue"
+                  style={{
+                    marginLeft: 'auto',
+                    paddingRight: '10px',
+                  }}
+                />
+              ) : null
+            }
+          />
+        </div>
+        <div style={{ flex: '1', padding: '0 16px' }}>
+          <Virtuoso
+            totalCount={data?.length}
+            data={data}
+            itemContent={(index, item: CrateItem) => (
+              <Track
+                key={item.id}
+                onClick={(e: any) => onSelect(item, e)}
+                onTrackChangeHandler={onTrackChangeHandler}
+                selected={isSelected(item)}
+                isPlaying={
+                  isPlaying &&
+                  !!item.versions.find(
+                    item => item.id === audioPlayerTrack?.version?.id,
+                  )
+                }
+                dbStatus={db?.find(dbItem => dbItem.id === item.id)}
+                currentAudioPlayerTrack={audioPlayerTrack}
+                {...item}
               />
             )}
-          </div>
-          <StyledAudioPlayer
-            src={
-              audioPlayerTrack
-                ? `https://beatjunkies.com/stream/?idattachment=${audioPlayerTrack?.id}&nocopy=${audioPlayerTrack?.streamId}.mp3`
-                : ''
-            }
-            customVolumeControls={[]}
-            customAdditionalControls={[]}
-            volume={0}
-            onPause={() => setIsPlaying(false)}
-            onPlaying={() => setIsPlaying(true)}
-            layout="horizontal-reverse"
-            progressJumpSteps={{ forward: 15000, backward: 15000 }}
-            showSkipControls={true}
-            ref={playerRef as RefObject<H5AudioPlayer>}
           />
-        </S.Layout>
-      </MantineProvider>
-    </ColorSchemeProvider>
+        </div>
+        <StyledAudioPlayer
+          src={
+            audioPlayerTrack
+              ? `https://beatjunkies.com/stream/?idattachment=${audioPlayerTrack?.version?.id}&nocopy=${audioPlayerTrack?.version?.streamId}.mp3`
+              : ''
+          }
+          customVolumeControls={[]}
+          customAdditionalControls={[]}
+          volume={0}
+          onPause={() => setIsPlaying(false)}
+          onPlaying={() => setIsPlaying(true)}
+          layout="horizontal-reverse"
+          progressJumpSteps={{ forward: 15000, backward: 15000 }}
+          showSkipControls={true}
+          ref={playerRef as RefObject<H5AudioPlayer>}
+        />
+      </S.Layout>
+    </>
   );
 }
 

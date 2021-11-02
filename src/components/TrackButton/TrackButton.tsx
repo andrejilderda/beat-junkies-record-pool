@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Button } from '@mantine/core';
+import 'styled-components/macro';
+import { Button, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 
 interface TrackButtonProps {
   isOn: boolean;
@@ -9,8 +10,22 @@ interface TrackButtonProps {
 }
 
 const TrackButton = ({ isOn, onClick, onIcon, offIcon }: TrackButtonProps) => {
+  const { colorScheme } = useMantineColorScheme();
+  const {
+    colors: { gray },
+  } = useMantineTheme();
+
   return (
-    <Button variant="link" color="dark" onClick={() => onClick()}>
+    <Button
+      variant="link"
+      css={`
+        color: ${colorScheme === 'dark' ? gray[5] : gray[5]};
+        &:hover {
+          color: ${colorScheme === 'dark' ? gray[3] : gray[7]};
+        }
+      `}
+      onClick={onClick}
+    >
       {isOn ? onIcon : offIcon}
     </Button>
   );

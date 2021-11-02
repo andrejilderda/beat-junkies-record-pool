@@ -4,6 +4,7 @@ import './styles/global.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import ThemeContext from './contexts/ThemeContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,9 +18,11 @@ const queryClient = new QueryClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <ThemeContext>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </ThemeContext>
   </React.StrictMode>,
   document.getElementById('root'),
 );

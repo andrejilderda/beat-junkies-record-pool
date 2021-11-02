@@ -1,8 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ThemeIcon as MantineThemeIcon } from '@mantine/core';
+import { ColorScheme, ThemeIcon as MantineThemeIcon } from '@mantine/core';
+import TrackButton from '../TrackButton/TrackButton';
 
-export const Wrapper = styled.div<{ selected: boolean }>`
+interface ThemeProps {
+  $palette: { [key: string]: string[] };
+  $colorScheme: ColorScheme;
+}
+
+interface WrapperProps extends ThemeProps {
+  selected: boolean;
+  $isInQueue: boolean;
+  $isReviewed: boolean;
+}
+
+export const Wrapper = styled.div<WrapperProps>`
   align-items: flex-start;
   border-radius: 4px;
   display: flex;
@@ -10,11 +22,35 @@ export const Wrapper = styled.div<{ selected: boolean }>`
   padding: 8px;
   user-select: none;
 
+  ${({ $isInQueue, $isReviewed, $palette }) => `
+    ${
+      ($isInQueue || $isReviewed) &&
+      `
+    > * { opacity: 0.3; }
+    ${
+      $isReviewed &&
+      `
+      text-decoration: line-through;
+      ${Title}, ${Artist} {
+        opacity: 0.8;
+      }`
+    }
+    `
+    }`}
+
   &:hover {
-    background: var(--dark-7);
+    background: ${({ $colorScheme, $palette }) =>
+      $colorScheme === 'dark' ? $palette.gray[8] : $palette.gray[1]};
   }
 
-  ${props => (props.selected ? `background: var(--dark-5);` : '')}
+  ${({ selected, $colorScheme, $palette }) =>
+    selected &&
+    `
+    &, &:hover {
+          background: ${
+            $colorScheme === 'dark' ? $palette.gray[7] : $palette.gray[2]
+          };
+    }`}
 `;
 
 export const PlayIcon = styled(MantineThemeIcon)`
@@ -34,9 +70,13 @@ export const TrackButtonWrapper = styled.div`
   gap: 4px;
 `;
 
-export const Title = styled.div<{ $isPlaying: boolean }>`
-  margin-bottom: 0.25rem;
-  ${({ $isPlaying }) => ($isPlaying ? `color: red;` : '')}
+export const Title = styled.div<ThemeProps & { $isPlaying: boolean }>`
+  ${({ $isPlaying, $colorScheme, $palette }) =>
+    $isPlaying
+      ? `color: ${
+          $colorScheme === 'dark' ? $palette.green[5] : $palette.green[7]
+        };`
+      : ''}
 `;
 
 export const Artist = styled.div`
