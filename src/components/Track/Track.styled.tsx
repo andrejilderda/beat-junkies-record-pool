@@ -1,13 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ColorScheme, ThemeIcon as MantineThemeIcon } from '@mantine/core';
+import { ThemeIcon as MantineThemeIcon } from '@mantine/core';
 
-interface ThemeProps {
-  $palette: { [key: string]: string[] };
-  $colorScheme: ColorScheme;
-}
-
-interface WrapperProps extends ThemeProps {
+interface WrapperProps {
   selected: boolean;
   $isInQueue: boolean;
   $isReviewed: boolean;
@@ -20,8 +15,17 @@ export const Wrapper = styled.div<WrapperProps>`
   flex: 1;
   padding: 8px;
   user-select: none;
+  ${(props) => props.selected && `
+    background: var(--gray-7);
+  `}
 
-  ${({ $isInQueue, $isReviewed, $palette }) => `
+  ${(props) => !props.selected && `
+    &:hover {
+      background: var(--gray-8);
+    }
+  `}
+
+  ${({ $isInQueue, $isReviewed }) => `
     ${($isInQueue || $isReviewed) && `
       > * { opacity: 0.3; }
 
@@ -34,25 +38,6 @@ export const Wrapper = styled.div<WrapperProps>`
       }
     `}
   `}
-
-  &:hover {
-    background: ${({ $colorScheme, $palette }) =>
-      $colorScheme === 'dark'
-        ? $palette.gray[8]
-        : $palette.gray[1]
-      };
-  }
-
-  ${({ selected, $colorScheme, $palette }) =>
-    selected &&
-    `
-    &, &:hover {
-      background: ${
-        $colorScheme === 'dark'
-        ? $palette.gray[7]
-        : $palette.gray[2]
-      };
-    }`}
 `;
 
 export const PlayIcon = styled(MantineThemeIcon)`
@@ -72,28 +57,32 @@ export const TrackButtonWrapper = styled.div`
   gap: 4px;
 `;
 
-export const Title = styled.div<ThemeProps & { $isPlaying: boolean }>`
-  ${({ $isPlaying, $colorScheme, $palette }) =>
+export const Title = styled.div<{ $isPlaying: boolean }>`
+  color: var(--gray-0);
+
+  ${({ $isPlaying }) =>
     $isPlaying && `
-      color: ${$colorScheme === 'dark'
-      ? $palette.green[5]
-      : $palette.green[7]};
+      color: var(--green-5)
+
+      [data-theme='light'] {
+        color: var(--green-7)
+      }
   `}
 `;
 
 export const Artist = styled.div`
-  color: #999;
+  color: var(--gray-5);
   font-size: 0.8rem;
-`;
+  `;
 
-export const Genre = styled.div`
-  color: #999;
+  export const Genre = styled.div`
+  color: var(--gray-5);
   font-size: 0.8rem;
   flex: 1 0 33.33%;
-`;
+  `;
 
-export const VersionWrapper = styled.div`
-  color: #999;
+  export const VersionWrapper = styled.div`
+  color: var(--gray-5);
   flex: 1 0 33.33%;
 
   ul {

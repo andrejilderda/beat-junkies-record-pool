@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   ActionIcon,
   Badge,
@@ -49,7 +49,6 @@ const Track = ({
   dbStatus,
 }: TrackProps) => {
   const { mutate } = useMutateTrack();
-  const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   console.log('colorScheme', colorScheme);
 
@@ -75,12 +74,9 @@ const Track = ({
 
   return (
     <>
-      {/* <IndeterminateCheckbox value="INDETERMINATE" /> */}
       <S.Wrapper
         selected={selected}
         onClick={onClick}
-        $palette={theme.colors}
-        $colorScheme={colorScheme}
         $isInQueue={isInQueue}
         $isReviewed={isReviewed}
       >
@@ -91,30 +87,21 @@ const Track = ({
               onClick={() => updateStatus(isReviewed ? 'remove' : 'reviewed')}
               onIcon={<CheckCircle weight="fill" size={24} />}
               offIcon={<Circle weight="light" size={24} />}
+              title={isReviewed ? 'Unmark as reviewed' : 'Mark as reviewed'}
             />
             <TrackButton
               isOn={isInQueue}
               onClick={() => updateStatus(isInQueue ? 'remove' : 'queue')}
               onIcon={<MinusCircle weight="light" size={24} />}
               offIcon={<PlusCircle weight="light" size={24} />}
+              title={isInQueue ? 'Remove from queue' : 'Add to queue'}
             />
           </S.TrackButtonWrapper>
-          <S.PlayIcon
-            onClick={e => onPlayIconClick(e)}
-            color="green"
-            size="lg"
-            radius="lg"
-          >
+          <S.PlayIcon onClick={e => onPlayIconClick(e)} size="lg" radius="lg">
             {isPlaying ? <Pause /> : <Play />}
           </S.PlayIcon>
           <div>
-            <S.Title
-              $isPlaying={isPlaying}
-              $palette={theme.colors}
-              $colorScheme={colorScheme}
-            >
-              {track}
-            </S.Title>
+            <S.Title $isPlaying={isPlaying}>{track}</S.Title>
             <S.Artist>{artist}</S.Artist>
           </div>
         </S.Songwrapper>

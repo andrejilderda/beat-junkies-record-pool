@@ -1,24 +1,7 @@
 @import url('fonts.css');
 
-:root {
-  --dark-0: #ffffff;
-  --dark-1: #c1c2c5;
-  --dark-2: #a6a7ab;
-  --dark-3: #909296;
-  --dark-4: #5c5f66;
-  --dark-5: #373a40;
-  --dark-6: #2c2e33;
-  --dark-7: #25262b;
-  --dark-8: #1a1b1e;
-  --dark-9: #141517;
-  --dark-10: #101113;
-}
-
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

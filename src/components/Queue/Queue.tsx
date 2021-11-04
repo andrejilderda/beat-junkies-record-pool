@@ -44,14 +44,13 @@ const Queue = ({ setOpen, queue, ...props }: QueueProps) => {
         <LoadingOverlay
           visible={isLoading}
           overlayColor="rgba(0,0,0,0.5)"
-          loaderProps={{ size: 'md', color: 'green' }}
+          loaderProps={{ size: 'md' }}
         />
         <Group position="right">
           <Tooltip opened={copied} label="Copied!">
             <Button
               leftIcon={<Clipboard />}
               variant="filled"
-              color="green"
               css={`
                 margin-bottom: 12px;
               `}

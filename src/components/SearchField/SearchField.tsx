@@ -18,8 +18,23 @@ const SearchField = (props: SearchFieldProps) => {
       icon={<MagnifyingGlass />}
       rightSectionWidth={90}
       css={`
+        &:focus-within {
+          svg {
+            color: var(--green-05);
+          }
+        }
+        svg {
+          color: var(--gray-6);
+        }
+
         input {
-          background: ${colorScheme === 'dark' ? gray[8] : gray[1]};
+          background: var(--gray-8);
+          color: var(--gray-3);
+
+          &:placeholder {
+            color: var(--gray-6);
+          }
+
           &:not(:focus) {
             border: ${colorScheme === 'light' ? 'transparent' : undefined};
           }

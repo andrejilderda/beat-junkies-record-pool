@@ -7,9 +7,16 @@ interface TrackButtonProps {
   onClick(): void;
   onIcon: ReactNode;
   offIcon: ReactNode;
+  title?: string;
 }
 
-const TrackButton = ({ isOn, onClick, onIcon, offIcon }: TrackButtonProps) => {
+const TrackButton = ({
+  isOn,
+  onClick,
+  onIcon,
+  offIcon,
+  ...rest
+}: TrackButtonProps) => {
   const { colorScheme } = useMantineColorScheme();
   const {
     colors: { gray },
@@ -19,12 +26,14 @@ const TrackButton = ({ isOn, onClick, onIcon, offIcon }: TrackButtonProps) => {
     <Button
       variant="link"
       css={`
+        cursor: default;
         color: ${colorScheme === 'dark' ? gray[5] : gray[5]};
         &:hover {
           color: ${colorScheme === 'dark' ? gray[3] : gray[7]};
         }
       `}
       onClick={onClick}
+      {...rest}
     >
       {isOn ? onIcon : offIcon}
     </Button>

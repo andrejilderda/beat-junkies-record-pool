@@ -18,7 +18,7 @@ const Keybindings = ({
     selectAll();
   });
 
-  useHotkeys(['Control+d', 'Meta+d'], e => {
+  useHotkeys(['Control+d', 'Meta+d', 'Escape'], e => {
     e.preventDefault();
     clearSelection();
   });

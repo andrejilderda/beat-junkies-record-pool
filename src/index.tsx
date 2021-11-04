@@ -4,6 +4,7 @@ import './styles/global.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import MantineThemeContext from './contexts/MantineThemeContext';
 import ThemeContext from './contexts/ThemeContext';
 
 const queryClient = new QueryClient({
@@ -18,11 +19,13 @@ const queryClient = new QueryClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeContext>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </ThemeContext>
+    <MantineThemeContext>
+      <ThemeContext>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </ThemeContext>
+    </MantineThemeContext>
   </React.StrictMode>,
   document.getElementById('root'),
 );
