@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ColorScheme, ThemeIcon as MantineThemeIcon } from '@mantine/core';
-import TrackButton from '../TrackButton/TrackButton';
 
 interface ThemeProps {
   $palette: { [key: string]: string[] };
@@ -23,33 +22,36 @@ export const Wrapper = styled.div<WrapperProps>`
   user-select: none;
 
   ${({ $isInQueue, $isReviewed, $palette }) => `
-    ${
-      ($isInQueue || $isReviewed) &&
-      `
-    > * { opacity: 0.3; }
-    ${
-      $isReviewed &&
-      `
-      text-decoration: line-through;
-      ${Title}, ${Artist} {
-        opacity: 0.8;
-      }`
-    }
-    `
-    }`}
+    ${($isInQueue || $isReviewed) && `
+      > * { opacity: 0.3; }
+
+      ${$isReviewed && `
+        text-decoration: line-through;
+
+        ${Title}, ${Artist} {
+          opacity: 0.8;
+        }`
+      }
+    `}
+  `}
 
   &:hover {
     background: ${({ $colorScheme, $palette }) =>
-      $colorScheme === 'dark' ? $palette.gray[8] : $palette.gray[1]};
+      $colorScheme === 'dark'
+        ? $palette.gray[8]
+        : $palette.gray[1]
+      };
   }
 
   ${({ selected, $colorScheme, $palette }) =>
     selected &&
     `
     &, &:hover {
-          background: ${
-            $colorScheme === 'dark' ? $palette.gray[7] : $palette.gray[2]
-          };
+      background: ${
+        $colorScheme === 'dark'
+        ? $palette.gray[7]
+        : $palette.gray[2]
+      };
     }`}
 `;
 
@@ -72,11 +74,11 @@ export const TrackButtonWrapper = styled.div`
 
 export const Title = styled.div<ThemeProps & { $isPlaying: boolean }>`
   ${({ $isPlaying, $colorScheme, $palette }) =>
-    $isPlaying
-      ? `color: ${
-          $colorScheme === 'dark' ? $palette.green[5] : $palette.green[7]
-        };`
-      : ''}
+    $isPlaying && `
+      color: ${$colorScheme === 'dark'
+      ? $palette.green[5]
+      : $palette.green[7]};
+  `}
 `;
 
 export const Artist = styled.div`
