@@ -85,7 +85,7 @@ const Track = ({
             <TrackButton
               isOn={isInQueue}
               onClick={() => updateStatus(isInQueue ? 'remove' : 'queue')}
-              onIcon={<MinusCircle weight="light" size={24} />}
+              onIcon={<MinusCircle weight="fill" size={24} />}
               offIcon={<PlusCircle weight="light" size={24} />}
               title={isInQueue ? 'Remove from queue' : 'Add to queue'}
             />

@@ -12,7 +12,7 @@ const AppName = () => (
       color: var(--gray-3);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.125rem;
       margin-top: 0;
       padding-bottom: 0;
       padding-top: 0.25rem;
