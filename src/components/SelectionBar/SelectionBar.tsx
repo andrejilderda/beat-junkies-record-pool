@@ -12,7 +12,7 @@ import { CrateItem, DbItem } from '../../types';
 import useMutateTracks from '../../hooks/useMutateTracks';
 import { TrackMutation } from '../../hooks/useMutateTrack';
 
-interface MultiSelectProps {
+interface SelectionBarProps {
   selection: CrateItem[];
   clearSelection(): void;
 }
@@ -66,7 +66,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const MultiSelect = ({ selection, clearSelection }: MultiSelectProps) => {
+const SelectionBar = ({ selection, clearSelection }: SelectionBarProps) => {
   const { mutate } = useMutateTracks();
 
   const handleMutate = (status: TrackMutation['status']) => {
@@ -132,4 +132,4 @@ const MultiSelect = ({ selection, clearSelection }: MultiSelectProps) => {
   );
 };
 
-export default MultiSelect;
+export default SelectionBar;

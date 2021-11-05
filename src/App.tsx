@@ -14,7 +14,7 @@ import H5AudioPlayer from 'react-h5-audio-player';
 import { Moon } from 'phosphor-react';
 import Keybindings from './components/Keybindings';
 import Queue from './components/Queue';
-import MultiSelect from './components/MultiSelect';
+import SelectionBar from './components/SelectionBar';
 import AppName from './components/AppName';
 import Filters from './components/Filters';
 import useSearchField from './hooks/useSearchField';
@@ -112,7 +112,7 @@ function App() {
                 shadow="xl"
               />
             </Group>
-            <MultiSelect
+            <SelectionBar
               selection={selectedItems}
               clearSelection={clearSelection}
             />
