@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { useMantineTheme } from '@mantine/styles';
-import CustomProperties from '../components/CustomProperties';
+import GlobalStyles from './GlobalStyles';
 
 interface ThemeContextProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ const ThemeContext = ({ children }: ThemeContextProps) => {
 
   return (
     <ThemeProvider theme={mantineTheme}>
-      <CustomProperties />
+      <GlobalStyles />
       {children}
     </ThemeProvider>
   );

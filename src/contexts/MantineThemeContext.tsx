@@ -26,6 +26,7 @@ const MantineThemeContext = ({ children }: ThemeContextProps) => {
           colorScheme,
           colors: getColorOverrides(colorScheme),
           primaryColor: 'green',
+          fontFamily: "'Plus Jakarta Sans', sans-serif;",
         }}
       >
         <div data-theme={colorScheme}>

@@ -2,15 +2,12 @@ import React from 'react';
 import 'styled-components/macro';
 import { TextInput, TextInputProps } from '@mantine/core';
 import { MagnifyingGlass } from 'phosphor-react';
-import { useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { useMantineColorScheme } from '@mantine/core';
 
 interface SearchFieldProps extends TextInputProps {}
 
 const SearchField = (props: SearchFieldProps) => {
   const { colorScheme } = useMantineColorScheme();
-  const {
-    colors: { gray },
-  } = useMantineTheme();
 
   return (
     <TextInput
@@ -18,11 +15,15 @@ const SearchField = (props: SearchFieldProps) => {
       icon={<MagnifyingGlass />}
       rightSectionWidth={90}
       css={`
+        flex: 1;
+        margin: 0;
+
         &:focus-within {
           svg {
-            color: var(--green-05);
+            color: var(--gray-5);
           }
         }
+
         svg {
           color: var(--gray-6);
         }

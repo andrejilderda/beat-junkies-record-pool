@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  ActionIcon,
-  Badge,
-  useMantineColorScheme,
-  useMantineTheme,
-} from '@mantine/core';
+import { ActionIcon, Badge } from '@mantine/core';
 import {
   PlayCircle,
   Play,
@@ -49,8 +44,6 @@ const Track = ({
   dbStatus,
 }: TrackProps) => {
   const { mutate } = useMutateTrack();
-  const { colorScheme } = useMantineColorScheme();
-  console.log('colorScheme', colorScheme);
 
   const updateStatus = (status: DbItem['status'] | 'remove') =>
     mutate({

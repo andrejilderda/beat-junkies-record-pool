@@ -30,6 +30,7 @@ export const Wrapper = styled.div<WrapperProps>`
       > * { opacity: 0.3; }
 
       ${$isReviewed && `
+        color: var(--gray-3);
         text-decoration: line-through;
 
         ${Title}, ${Artist} {

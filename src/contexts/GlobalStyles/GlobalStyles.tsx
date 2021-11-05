@@ -2,7 +2,7 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 // prettier-ignore
-const CustomProperties = createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
 ${({ theme: { colors } }: any) => `
   :root {
     ${Object.entries({
@@ -17,7 +17,12 @@ ${({ theme: { colors } }: any) => `
       .join('')
     }
   }
+
+  .mantine-Tooltip-body {
+    background-color: var(--gray-3);
+    color: var(--gray-7);
+  }
 `}
 `;
 
-export default CustomProperties;
+export default GlobalStyles;
