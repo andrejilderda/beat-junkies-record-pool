@@ -1,19 +1,16 @@
 import React from 'react';
 import {
   ActionIcon,
-  Button,
   Code,
   Drawer,
   DrawerProps,
   Group,
   LoadingOverlay,
   Tooltip,
-  useMantineColorScheme,
-  useMantineTheme,
 } from '@mantine/core';
 import 'styled-components/macro';
 import { CrateItem } from '../../types';
-import { ArchiveBox, Clipboard, Copy } from 'phosphor-react';
+import { ArchiveBox, CheckCircle, Clipboard, X } from 'phosphor-react';
 import { useClipboard } from '@mantine/hooks';
 import useDb from '../../hooks/useDb';
 
@@ -23,10 +20,6 @@ interface QueueProps extends DrawerProps {
 }
 
 const Queue = ({ setOpen, queue, ...props }: QueueProps) => {
-  const { colorScheme } = useMantineColorScheme();
-  const {
-    colors: { gray },
-  } = useMantineTheme();
   const { copy, copied } = useClipboard();
   const { data, isLoading } = useDb([{ status: 'queue' }]);
   const downloadList = data?.map(
@@ -37,34 +30,53 @@ const Queue = ({ setOpen, queue, ...props }: QueueProps) => {
     <>
       <Drawer
         {...props}
+        hideCloseButton={true}
         css={`
           margin: 0;
+          color: var(--gray-0);
+          font-weight: bold;
         `}
       >
         <LoadingOverlay
           visible={isLoading}
-          overlayColor="rgba(0,0,0,0.5)"
+          overlayColor="var(--gray-9)"
           loaderProps={{ size: 'md' }}
         />
-        <Group position="right">
-          <Tooltip opened={copied} label="Copied!">
-            <Button
-              leftIcon={<Clipboard />}
-              variant="filled"
-              css={`
-                margin-bottom: 12px;
-              `}
+        <Group position="apart">
+          <>Download Queue</>
+          <Group spacing="xs">
+            <Tooltip
+              label="Copy to clipboard"
               disabled={copied}
-              onClick={() => copy(downloadList)}
+              transition="pop"
             >
-              Copy to clipboard
-            </Button>
-          </Tooltip>
+              <Tooltip opened={copied} label="Copied!" transition="pop">
+                <ActionIcon
+                  size="md"
+                  color="gray"
+                  onClick={() => copy(downloadList)}
+                >
+                  <Clipboard size={20} />
+                </ActionIcon>
+              </Tooltip>
+            </Tooltip>
+            <Tooltip label="Mark as downloaded" transition="pop">
+              <ActionIcon size="md" color="gray">
+                <CheckCircle weight="regular" size={20} />
+              </ActionIcon>
+            </Tooltip>
+            <ActionIcon size="md" color="gray" onClick={() => setOpen(false)}>
+              <X size={20} />
+            </ActionIcon>
+          </Group>
         </Group>
         <Code
           block
           css={`
-            background: ${colorScheme === 'dark' ? gray[8] : gray[1]};
+            background: var(--gray-8);
+            color: var(--gray-3);
+            font-weight: normal;
+            margin-top: 12px;
           `}
         >
           {downloadList}
