@@ -9,6 +9,7 @@ import {
   PauseCircle,
   MinusCircle,
   CheckCircle,
+  SpotifyLogo,
 } from 'phosphor-react';
 import {
   CrateItem,
@@ -142,6 +143,9 @@ const Track = ({
             </ul>
           ) : null}
         </S.VersionWrapper>
+        <S.StyledSpotifyLogo href={`spotify:search:${artist} ${track}`}>
+          <SpotifyLogo size={24} weight="thin" />
+        </S.StyledSpotifyLogo>
       </S.Wrapper>
     </>
   );
