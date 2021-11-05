@@ -11,7 +11,7 @@ const useMutateTracks = () => {
   return useMutation<
     unknown,
     unknown,
-    { tracks: TrackMutation[], status: DbItem['status'] }
+    { tracks: TrackMutation[], status: TrackMutation['status'] }
   >(async ({ tracks, status }) => {
     const allMutations = tracks.map(({ id, versions }) => {
       return mutateAsync({

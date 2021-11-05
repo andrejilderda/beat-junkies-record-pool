@@ -10,9 +10,11 @@ import {
 } from '@mantine/core';
 import 'styled-components/macro';
 import { CrateItem } from '../../types';
-import { ArchiveBox, CheckCircle, Clipboard, X } from 'phosphor-react';
+import { ArchiveBox, Check, CheckCircle, Clipboard, X } from 'phosphor-react';
 import { useClipboard } from '@mantine/hooks';
+import { useNotifications } from '@mantine/notifications';
 import useDb from '../../hooks/useDb';
+import useMutateTracks from '../../hooks/useMutateTracks';
 
 interface QueueProps extends DrawerProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,11 +22,33 @@ interface QueueProps extends DrawerProps {
 }
 
 const Queue = ({ setOpen, queue, ...props }: QueueProps) => {
+  const { showNotification } = useNotifications();
   const { copy, copied } = useClipboard();
   const { data, isLoading } = useDb([{ status: 'queue' }]);
-  const downloadList = data?.map(
-    item => `https://beatjunkies.com/download/?idattachment=${item.id}\n`,
-  );
+  const { mutate } = useMutateTracks();
+  const hasItemsInQueue = !!data?.length;
+  const downloadList =
+    data
+      ?.map(
+        item => `https://beatjunkies.com/download/?idattachment=${item.id}\n`,
+      )
+      .join('') ||
+    'The download queue is empty. \nClick the + to add items to the queue.';
+
+  const handleMarkAsDownloadedClick = () => {
+    if (data?.length) {
+      setOpen(false);
+      showNotification({
+        message: `${data.length} ${
+          data.length > 1 ? 'items' : 'item'
+        } marked as downloaded`,
+        color: 'green',
+        icon: <Check size={20} weight="bold" />,
+        autoClose: 2000,
+      });
+      mutate({ tracks: data, status: 'downloaded' });
+    }
+  };
 
   return (
     <>
@@ -45,26 +69,36 @@ const Queue = ({ setOpen, queue, ...props }: QueueProps) => {
         <Group position="apart">
           <>Download Queue</>
           <Group spacing="xs">
-            <Tooltip
-              label="Copy to clipboard"
-              disabled={copied}
-              transition="pop"
-            >
-              <Tooltip opened={copied} label="Copied!" transition="pop">
-                <ActionIcon
-                  size="md"
-                  color="gray"
-                  onClick={() => copy(downloadList)}
-                >
-                  <Clipboard size={20} />
-                </ActionIcon>
-              </Tooltip>
-            </Tooltip>
-            <Tooltip label="Mark as downloaded" transition="pop">
-              <ActionIcon size="md" color="gray">
-                <CheckCircle weight="regular" size={20} />
-              </ActionIcon>
-            </Tooltip>
+            <>
+              {hasItemsInQueue && (
+                <>
+                  <Tooltip
+                    label="Copy to clipboard"
+                    disabled={copied}
+                    transition="pop"
+                  >
+                    <Tooltip opened={copied} label="Copied!" transition="pop">
+                      <ActionIcon
+                        size="md"
+                        color="gray"
+                        onClick={() => copy(downloadList)}
+                      >
+                        <Clipboard size={20} />
+                      </ActionIcon>
+                    </Tooltip>
+                  </Tooltip>
+                  <Tooltip label="Mark as downloaded" transition="pop">
+                    <ActionIcon
+                      size="md"
+                      color="gray"
+                      onClick={handleMarkAsDownloadedClick}
+                    >
+                      <CheckCircle weight="regular" size={20} />
+                    </ActionIcon>
+                  </Tooltip>
+                </>
+              )}
+            </>
             <ActionIcon size="md" color="gray" onClick={() => setOpen(false)}>
               <X size={20} />
             </ActionIcon>

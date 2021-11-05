@@ -6,10 +6,9 @@ type Filters = Filter[]
 
 const useDb = (filters: Filters) => {
   const filterString = filters.map(filter => {
-    const [key, value] = Object.entries(filter);
+    const [key, value] = Object.entries(filter)[0];
     return `${key}=${value}`
   }).join('&');
-
   const query = filters?.length ? `?${filterString}` : null;
 
   return useQuery<DbItem[], Error>(
