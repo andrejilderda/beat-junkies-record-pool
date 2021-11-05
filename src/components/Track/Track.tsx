@@ -18,7 +18,7 @@ import {
   AudioPlayerTrack,
 } from '../../types';
 import * as S from './Track.styled';
-import useMutateTrack from '../../hooks/useMutateTrack';
+import useMutateTrack, { TrackMutation } from '../../hooks/useMutateTrack';
 import TrackButton from '../TrackButton/TrackButton';
 
 interface TrackProps extends CrateItem {
@@ -45,13 +45,13 @@ const Track = ({
 }: TrackProps) => {
   const { mutate } = useMutateTrack();
 
-  const updateStatus = (status: DbItem['status'] | 'remove') =>
+  const updateStatus = (status: TrackMutation['status']) =>
     mutate({
       id,
       ...(status !== 'remove' && {
         versions: versions.map(version => Number(version.id)),
+        status,
       }),
-      ...(status !== 'remove' && { status }),
     });
 
   const onPlayIconClick = (

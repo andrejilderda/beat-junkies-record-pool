@@ -21,6 +21,8 @@ import H5AudioPlayer from 'react-h5-audio-player';
 import { Moon } from 'phosphor-react';
 import Keybindings from './components/Keybindings/Keybindings';
 import Queue from './components/Queue/Queue';
+import MultiSelect from './components/MultiSelect';
+import AppName from './components/AppName';
 
 const getKey = (item: CrateItem) => item.id;
 
@@ -80,44 +82,54 @@ function App() {
             padding: 0 16px;
           `}
         >
-          <Group position="right" withGutter>
-            <ActionIcon
-              size="lg"
-              variant="filled"
-              onClick={() => toggleColorScheme()}
-            >
-              <Moon size={20} />
-            </ActionIcon>
-            <Queue
-              title="Download queue"
-              opened={queueOpen}
-              queue={selectedItems}
-              setOpen={setQueueOpen}
-              onClose={() => setQueueOpen(false)}
-              padding="xl"
-              size="xl"
-              position="right"
-              overlayColor="rgba(0,0,0,0.9)"
-              shadow="xl"
+          <AppName />
+          <div
+            css={`
+              position: relative;
+            `}
+          >
+            <Group position="apart" spacing="md" withGutter>
+              <SearchField
+                value={filter}
+                onChange={e => setFilter(e.target.value)}
+                rightSection={
+                  isLoading ? (
+                    <Loader
+                      size="sm"
+                      color="blue"
+                      style={{
+                        marginLeft: 'auto',
+                        paddingRight: '10px',
+                      }}
+                    />
+                  ) : null
+                }
+              />
+              <ActionIcon
+                size="lg"
+                variant="filled"
+                onClick={() => toggleColorScheme()}
+              >
+                <Moon size={20} />
+              </ActionIcon>
+              <Queue
+                // title="Download queue"
+                opened={queueOpen}
+                queue={selectedItems}
+                setOpen={setQueueOpen}
+                onClose={() => setQueueOpen(false)}
+                padding="xl"
+                size="xl"
+                position="right"
+                overlayColor="rgba(0,0,0,0.9)"
+                shadow="xl"
+              />
+            </Group>
+            <MultiSelect
+              selection={selectedItems}
+              clearSelection={clearSelection}
             />
-          </Group>
-
-          <SearchField
-            value={filter}
-            onChange={e => setFilter(e.target.value)}
-            rightSection={
-              isLoading ? (
-                <Loader
-                  size="sm"
-                  color="blue"
-                  style={{
-                    marginLeft: 'auto',
-                    paddingRight: '10px',
-                  }}
-                />
-              ) : null
-            }
-          />
+          </div>
         </div>
         <div style={{ flex: '1', padding: '0 16px' }}>
           <Virtuoso

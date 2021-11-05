@@ -3,11 +3,11 @@ import { createGlobalStyle } from 'styled-components';
 
 // prettier-ignore
 const GlobalStyles = createGlobalStyle`
-${({ theme: { colors } }: any) => `
+${({theme}: any) => `
   :root {
     ${Object.entries({
-      gray: colors.gray,
-      green: colors.green,
+      gray: theme.colors.gray,
+      green: theme.colors.green,
     })
       .map(([colorName, colors]) =>
         colors.map((color: string, index: number) => `
@@ -16,6 +16,13 @@ ${({ theme: { colors } }: any) => `
       )
       .join('')
     }
+
+    --radius-sm: ${theme.radius.sm}px;
+  }
+
+  body {
+    color: var(--gray-0);
+    cursor: default;
   }
 
   .mantine-Tooltip-body {

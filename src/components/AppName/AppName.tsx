@@ -12,9 +12,10 @@ const AppName = () => (
       color: var(--gray-3);
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 4px;
-      padding-bottom: 6px;
+      gap: 0.5rem;
+      margin-top: 0;
+      padding-bottom: 0;
+      padding-top: 0.25rem;
     `}
     withGutter
   >

@@ -1,4 +1,12 @@
 import { useMutation, useQueryClient } from 'react-query';
+import { DbItem } from '../types';
+
+export interface TrackMutation {
+  id: number;
+  versions?: number[];
+  status?: DbItem['status'] | 'remove';
+  invalidateDb?: boolean;
+}
 
 const useMutateTrack = () => {
   const queryClient = useQueryClient();
@@ -6,15 +14,8 @@ const useMutateTrack = () => {
   return useMutation<
     unknown,
     unknown,
-    {
-      id: number;
-      versions?: number[];
-      status?: 'reviewed' | 'queue' | 'downloaded';
-    }
+    TrackMutation
   >(async ({ id, versions, status }) => {
-    console.log('id', id);
-    console.log('versions', versions);
-    console.log('status', status);
     const headers = { 'Content-Type': 'application/json' };
     const deleteMutation = () => fetch(`http://localhost:3002/tracks/${id}/`, {
       headers,
@@ -35,7 +36,9 @@ const useMutateTrack = () => {
       }),
     });
   }, {
-    onSuccess: () => queryClient.invalidateQueries('db')
+    onSuccess: (_, { invalidateDb = true }) => {
+      if (invalidateDb) queryClient.invalidateQueries('db');
+    }
   });
 }
 
