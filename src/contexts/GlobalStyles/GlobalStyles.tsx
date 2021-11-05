@@ -29,6 +29,16 @@ ${({theme}: any) => `
     background-color: var(--gray-3);
     color: var(--gray-7);
   }
+
+  ${theme.colorScheme === 'light' ? `
+    .mantine-Notification-root {
+      background: var(--gray-2);
+    }
+  ` : `
+    .mantine-Notification-root {
+      background: var(--gray-8);
+    }
+  `}
 `}
 `;
 
