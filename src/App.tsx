@@ -1,7 +1,6 @@
 import React, { RefObject, useRef, useState } from 'react';
 import 'styled-components/macro';
 import { Virtuoso } from 'react-virtuoso';
-import { useQuery } from 'react-query';
 import 'react-h5-audio-player/lib/styles.css';
 import { unique } from './utils';
 import Track from './components/Track';
@@ -10,52 +9,46 @@ import { ActionIcon, Group } from '@mantine/core';
 import AudioPlayer from './components/AudioPlayer';
 import * as S from './App.styled';
 import useSelection, { PivotReducerState } from 'react-selection-hooks';
-import SearchField from './components/SearchField/SearchField';
-import {
-  CrateItem,
-  DbItem,
-  OnTrackChangeHandler,
-  AudioPlayerTrack,
-} from './types';
+import { CrateItem, OnTrackChangeHandler, AudioPlayerTrack } from './types';
 import H5AudioPlayer from 'react-h5-audio-player';
 import { Moon } from 'phosphor-react';
 import Keybindings from './components/Keybindings';
 import Queue from './components/Queue';
 import MultiSelect from './components/MultiSelect';
 import AppName from './components/AppName';
+import Filters from './components/Filters';
+import useSearchField from './hooks/useSearchField';
+import useDb from './hooks/useDb';
+import useCrate from './hooks/useCrate';
+import useCrateFilter from './hooks/useCrateFilter';
 
 const getKey = (item: CrateItem) => item.id;
 
 function App() {
   const { toggleColorScheme } = useMantineColorScheme();
-  const [filter, setFilter] = useState('');
+  // UI state
+  const [queueOpen, setQueueOpen] = useState(false);
+  const { value: searchQuery, onChange: onSearchChange } = useSearchField();
+  const [genres, setGenres] = useState<string[]>(['no-status']);
+  const [statusFilters, setStatusFilters] = useState<string[]>(['no-status']);
+  const { data: db } = useDb();
+  const { isLoading, error, data: crate } = useCrate(searchQuery);
+  const filteredCrate = useCrateFilter(crate, db, statusFilters);
+
+  // selection
+  const { selectedItems, selectAll, clearSelection, isSelected, onSelect } =
+    useSelection<CrateItem, PivotReducerState<CrateItem>>(filteredCrate || [], {
+      getKey,
+    });
+  // audio player
+  const [isPlaying, setIsPlaying] = useState(false);
+  const playerRef = useRef<H5AudioPlayer>();
   const [audioPlayerTrack, setAudioPlayerTrack] = useState<
     AudioPlayerTrack | undefined
   >(undefined);
-  const playerRef = useRef<H5AudioPlayer>();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [queueOpen, setQueueOpen] = useState(false);
-  const { isLoading, error, data } = useQuery<CrateItem[], Error>(
-    ['crate', filter],
-    () =>
-      fetch(`http://localhost:3001/tracks${filter ? `?q=${filter}` : ''}`).then(
-        res => res.json() as Promise<CrateItem[]>,
-      ),
-  );
 
-  const { data: db } = useQuery<DbItem[], Error>('db', () =>
-    fetch(`http://localhost:3002/tracks/`).then(
-      res => res.json() as Promise<DbItem[]>,
-    ),
-  );
-
-  const { selectedItems, selectAll, clearSelection, isSelected, onSelect } =
-    useSelection<CrateItem, PivotReducerState<CrateItem>>(data || [], {
-      getKey,
-    });
-
-  const genres = Array.isArray(data)
-    ? unique(data?.map(item => item.genre || 'none')).sort()
+  const genreItems = Array.isArray(filteredCrate)
+    ? unique(filteredCrate?.map(item => item.genre || 'none')).sort()
     : [];
 
   const onTrackChangeHandler: OnTrackChangeHandler = (e, track) => {
@@ -89,21 +82,15 @@ function App() {
             `}
           >
             <Group position="apart" spacing="md" withGutter>
-              <SearchField
-                value={filter}
-                onChange={e => setFilter(e.target.value)}
-                rightSection={
-                  isLoading ? (
-                    <Loader
-                      size="sm"
-                      color="blue"
-                      style={{
-                        marginLeft: 'auto',
-                        paddingRight: '10px',
-                      }}
-                    />
-                  ) : null
-                }
+              <Filters
+                loading={isLoading}
+                onSearchChange={onSearchChange}
+                searchValue={searchQuery}
+                statusFilters={statusFilters}
+                onStatusFilterChange={setStatusFilters}
+                genreItems={genreItems}
+                genreSelection={genres}
+                onGenreChange={setGenres}
               />
               <ActionIcon
                 size="lg"
@@ -133,8 +120,8 @@ function App() {
         </div>
         <div style={{ flex: '1', padding: '0 16px' }}>
           <Virtuoso
-            totalCount={data?.length}
-            data={data}
+            totalCount={filteredCrate?.length}
+            data={filteredCrate}
             itemContent={(index, item: CrateItem) => (
               <Track
                 key={item.id}

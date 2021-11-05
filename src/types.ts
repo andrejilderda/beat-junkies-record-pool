@@ -20,6 +20,8 @@ export interface DbItem {
   status: 'reviewed' | 'queue' | 'downloaded';
 }
 
+export type FilterCategory = 'reviewed' | 'queue' | 'downloaded' | 'no-status';
+
 export interface AudioPlayerTrack {
   id: CrateItem['id'];
   version: Version | undefined;

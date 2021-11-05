@@ -1,15 +1,18 @@
 import { useQuery } from 'react-query';
 import { DbItem } from '../types';
 
-type Filter = { [key: string]: string }
+type Filter = { [key: string]: string | string[] }
 type Filters = Filter[]
 
-const useDb = (filters: Filters) => {
-  const filterString = filters.map(filter => {
+const useDb = (filters?: Filters) => {
+  const filterString = filters?.map(filter => {
     const [key, value] = Object.entries(filter)[0];
-    return `${key}=${value}`
+
+    // multiple filters are allowed, e.g. '?status=queue&status=downloaded'
+    const arr = Array.isArray(value) ? value : [value];
+    return arr.map(item => `${key}=${item}`).join('&');
   }).join('&');
-  const query = filters?.length ? `?${filterString}` : null;
+  const query = filters?.length ? `?${filterString}` : '';
 
   return useQuery<DbItem[], Error>(
     ['db', filters],

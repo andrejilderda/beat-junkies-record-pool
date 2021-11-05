@@ -35,9 +35,16 @@ const SearchField = (props: SearchFieldProps) => {
           &:placeholder {
             color: var(--gray-6);
           }
+        }
 
-          &:not(:focus) {
-            border: ${colorScheme === 'light' ? 'transparent' : undefined};
+        [data-theme='light'] & {
+          svg {
+            color: var(--gray-4);
+          }
+
+          input:not(:focus) {
+            background: var(--gray-7);
+            border: transparent;
           }
         }
       `}

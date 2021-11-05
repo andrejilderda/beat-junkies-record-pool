@@ -22,7 +22,7 @@ const useMutateTrack = () => {
       method: 'DELETE',
     });
 
-    if (!versions || !status) return deleteMutation();
+    if (!versions || !status || status === 'remove') return deleteMutation();
 
     await deleteMutation();
 
