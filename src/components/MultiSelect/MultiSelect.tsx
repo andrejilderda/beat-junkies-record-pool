@@ -1,10 +1,16 @@
 import React from 'react';
-import { CheckCircle, DownloadSimple, PlusCircle } from 'phosphor-react';
+import {
+  CheckCircle,
+  DownloadSimple,
+  PlusCircle,
+  ProhibitInset,
+} from 'phosphor-react';
 import styled from 'styled-components';
 import 'styled-components/macro';
 import { CSSTransition } from 'react-transition-group';
 import { CrateItem, DbItem } from '../../types';
 import useMutateTracks from '../../hooks/useMutateTracks';
+import { TrackMutation } from '../../hooks/useMutateTrack';
 
 interface MultiSelectProps {
   selection: CrateItem[];
@@ -63,7 +69,7 @@ const StyledWrapper = styled.div`
 const MultiSelect = ({ selection, clearSelection }: MultiSelectProps) => {
   const { mutate } = useMutateTracks();
 
-  const handleMutate = (status: DbItem['status']) => {
+  const handleMutate = (status: TrackMutation['status']) => {
     const tracks = selection.map(({ id, versions }) => {
       return {
         id,
@@ -107,6 +113,10 @@ const MultiSelect = ({ selection, clearSelection }: MultiSelectProps) => {
           <StyledLink onClick={() => handleMutate('downloaded')}>
             Mark as downloaded
             <DownloadSimple size={20} />
+          </StyledLink>
+          <StyledLink onClick={() => handleMutate('remove')}>
+            Reset status
+            <ProhibitInset size={20} />
           </StyledLink>
         </div>
         <StyledLink

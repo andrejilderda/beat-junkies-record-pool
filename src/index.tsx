@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import MantineThemeContext from './contexts/MantineThemeContext';
 import ThemeContext from './contexts/ThemeContext';
+import { NotificationsProvider } from '@mantine/notifications';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,9 +22,11 @@ ReactDOM.render(
   <React.StrictMode>
     <MantineThemeContext>
       <ThemeContext>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
+        <NotificationsProvider position="top-right">
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
+        </NotificationsProvider>
       </ThemeContext>
     </MantineThemeContext>
   </React.StrictMode>,
