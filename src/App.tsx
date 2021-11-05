@@ -162,7 +162,6 @@ function App() {
           }
           customVolumeControls={[]}
           customAdditionalControls={[]}
-          volume={0}
           onPause={() => setIsPlaying(false)}
           onPlaying={() => setIsPlaying(true)}
           layout="horizontal-reverse"
