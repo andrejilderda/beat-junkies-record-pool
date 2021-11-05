@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionIcon, Badge } from '@mantine/core';
+import { ActionIcon } from '@mantine/core';
 import {
   PlayCircle,
   Play,
@@ -64,6 +64,7 @@ const Track = ({
 
   const isInQueue = dbStatus?.status === 'queue';
   const isReviewed = dbStatus?.status === 'reviewed';
+  const isDownloaded = dbStatus?.status === 'downloaded';
 
   return (
     <>
@@ -76,9 +77,15 @@ const Track = ({
         <S.Songwrapper>
           <S.TrackButtonWrapper>
             <TrackButton
-              isOn={isReviewed}
+              isOn={isReviewed || isDownloaded}
               onClick={() => updateStatus(isReviewed ? 'remove' : 'reviewed')}
-              onIcon={<CheckCircle weight="fill" size={24} />}
+              onIcon={
+                isReviewed ? (
+                  <CheckCircle weight="fill" size={24} />
+                ) : (
+                  <CheckCircle weight="fill" color="var(--green-7)" size={24} />
+                )
+              }
               offIcon={<Circle weight="light" size={24} />}
               title={isReviewed ? 'Unmark as reviewed' : 'Mark as reviewed'}
             />
@@ -103,11 +110,12 @@ const Track = ({
           {versions?.length > 1 ? (
             <ul>
               {versions.sort().map(version => (
-                <Badge
+                <S.Badge
                   key={version.id}
                   style={{ paddingLeft: 0 }}
                   size="lg"
                   color="gray"
+                  $selected={selected}
                   onClick={(e: React.MouseEvent<HTMLDivElement>) =>
                     onPlayIconClick(e, version)
                   }
@@ -115,15 +123,21 @@ const Track = ({
                     <ActionIcon>
                       {isPlaying &&
                       version === currentAudioPlayerTrack?.version ? (
-                        <PauseCircle size={24} />
+                        <Pause weight="fill" size={12} />
                       ) : (
-                        <PlayCircle size={24} />
+                        <Play weight="regular" size={12} />
                       )}
                     </ActionIcon>
                   }
+                  $isPlaying={
+                    isPlaying && version === currentAudioPlayerTrack?.version
+                  }
                 >
-                  <label>{version.tag || ''}</label>
-                </Badge>
+                  <label>
+                    {/* Replace only the first ( & ) in the string */}
+                    {version?.tag?.replace(/\(/, '').replace(/\)/, '') || ''}
+                  </label>
+                </S.Badge>
               ))}
             </ul>
           ) : null}
