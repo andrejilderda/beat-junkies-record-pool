@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import AudioPlayer from 'react-h5-audio-player';
 
-export const StyledAudioPlayer = styled(AudioPlayer)`
+const StyledAudioPlayer = styled(AudioPlayer)`
   background: var(--gray-8);
   flex: 0;
 
@@ -46,3 +46,5 @@ export const StyledAudioPlayer = styled(AudioPlayer)`
     background: var(--gray-6);
   }
 `;
+
+export default StyledAudioPlayer;

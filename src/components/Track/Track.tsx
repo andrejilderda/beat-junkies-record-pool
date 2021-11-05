@@ -1,12 +1,10 @@
 import React from 'react';
 import { ActionIcon } from '@mantine/core';
 import {
-  PlayCircle,
   Play,
   Pause,
   PlusCircle,
   Circle,
-  PauseCircle,
   MinusCircle,
   CheckCircle,
   SpotifyLogo,
@@ -20,7 +18,7 @@ import {
 } from '../../types';
 import * as S from './Track.styled';
 import useMutateTrack, { TrackMutation } from '../../hooks/useMutateTrack';
-import TrackButton from '../TrackButton/TrackButton';
+import TrackButton from '../TrackButton';
 
 interface TrackProps extends CrateItem {
   onTrackChangeHandler: OnTrackChangeHandler;

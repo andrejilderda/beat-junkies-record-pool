@@ -4,10 +4,10 @@ import { Virtuoso } from 'react-virtuoso';
 import { useQuery } from 'react-query';
 import 'react-h5-audio-player/lib/styles.css';
 import { unique } from './utils';
-import Track from './components/Track/Track';
+import Track from './components/Track';
 import { useMantineColorScheme } from '@mantine/styles';
-import { ActionIcon, Group, Loader } from '@mantine/core';
-import { StyledAudioPlayer } from './components/AudioPlayer/AudioPlayer';
+import { ActionIcon, Group } from '@mantine/core';
+import AudioPlayer from './components/AudioPlayer';
 import * as S from './App.styled';
 import useSelection, { PivotReducerState } from 'react-selection-hooks';
 import SearchField from './components/SearchField/SearchField';
@@ -19,8 +19,8 @@ import {
 } from './types';
 import H5AudioPlayer from 'react-h5-audio-player';
 import { Moon } from 'phosphor-react';
-import Keybindings from './components/Keybindings/Keybindings';
-import Queue from './components/Queue/Queue';
+import Keybindings from './components/Keybindings';
+import Queue from './components/Queue';
 import MultiSelect from './components/MultiSelect';
 import AppName from './components/AppName';
 
@@ -154,7 +154,7 @@ function App() {
             )}
           />
         </div>
-        <StyledAudioPlayer
+        <AudioPlayer
           src={
             audioPlayerTrack
               ? `https://beatjunkies.com/stream/?idattachment=${audioPlayerTrack?.version?.id}&nocopy=${audioPlayerTrack?.version?.streamId}.mp3`
