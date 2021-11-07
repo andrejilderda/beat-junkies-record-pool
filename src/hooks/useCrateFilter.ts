@@ -35,6 +35,10 @@ const filterReducer = (
       return initialFilterState;
   }
 };
+
+const filterByGenre = (item: CrateItem, genres: string[]) => {
+  if (!genres.length) return true;
+  return genres.includes(item.genre);
 }
 
 const getFilteredCrate = (
@@ -53,6 +57,7 @@ const getFilteredCrate = (
 
   const items = crate
     .filter(item => !idsToFilter.includes(item.id))
+    .filter(item => filterByGenre(item, filters.genres));
 
   if (!filterItemsWithNoStatus) return items;
 
