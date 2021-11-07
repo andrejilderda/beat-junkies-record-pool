@@ -1,8 +1,17 @@
-import { useQuery } from 'react-query';
+import { useRef } from 'react';
+import { useQuery, UseQueryResult } from 'react-query';
 import { CrateItem } from '../types';
+import { unique } from '../utils';
 
-const useCrate = (searchQuery: string) => {
-  return useQuery<CrateItem[], Error>(
+const getGenres = (crate: CrateItem[]) => Array.isArray(crate)
+  ? unique(crate?.map(item => item.genre || 'none')).sort()
+  : [];
+
+const useCrate = (searchQuery: string)
+  : UseQueryResult<CrateItem[], Error> & { genres: string[] } => {
+  const genres = useRef<string[]>([]);
+
+  const query = useQuery<CrateItem[], Error>(
     ['crate', searchQuery],
     () => {
       const query = [searchQuery
@@ -17,7 +26,19 @@ const useCrate = (searchQuery: string) => {
       )
         .then(res => res.json() as Promise<CrateItem[]>)
     },
+    {
+      onSuccess: (crate) => {
+        // only get genres from first successful fetch
+        if (genres?.current.length) return;
+        genres.current = getGenres(crate)
+      }
+    }
   );
+
+  return {
+    ...query,
+    genres: genres.current,
+  }
 }
 
 export default useCrate;

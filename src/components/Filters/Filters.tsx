@@ -1,16 +1,12 @@
-import { Loader, MultiSelect, SegmentedControl } from '@mantine/core';
+import { MultiSelect, SegmentedControl } from '@mantine/core';
 import styled from 'styled-components';
 import 'styled-components/macro';
-import SearchField from '../SearchField';
+import { FilterState } from '../../hooks/useCrateFilter';
 
 interface FiltersProps {
-  loading: boolean;
-  searchValue: string;
-  onSearchChange(e: React.ChangeEvent<HTMLInputElement>): void;
-  statusFilters: string[];
+  filters: FilterState;
   onStatusFilterChange(value: string[]): void;
   genreItems: string[];
-  genreSelection: string[];
   onGenreChange(value: string[]): void;
 }
 
@@ -51,38 +47,18 @@ const StyledGenreSelect = styled(StyledMultiSelect)`
 `;
 
 const Filters = ({
-  loading,
-  searchValue,
-  onSearchChange,
+  filters,
   onStatusFilterChange,
-  statusFilters,
   genreItems,
-  genreSelection,
   onGenreChange,
 }: FiltersProps) => {
+  const { genres, statuses } = filters;
+
   return (
     <>
-      <SearchField
-        value={searchValue}
-        onChange={onSearchChange}
-        // prevent selecting all items when cmd + a
-        onKeyDown={e => e.stopPropagation()}
-        rightSection={
-          loading ? (
-            <Loader
-              size="sm"
-              color="blue"
-              css={`
-                margin-left: auto;
-                padding-right: 10px;
-              `}
-            />
-          ) : null
-        }
-      />
       <StyledMultiSelect
         onChange={e => onStatusFilterChange(e)}
-        value={statusFilters}
+        value={statuses}
         color="green"
         data={[
           {
@@ -105,17 +81,17 @@ const Filters = ({
       />
       <StyledGenreSelect
         onChange={e => onGenreChange(e)}
-        value={genreSelection}
+        value={genres}
         color="green"
         data={genreItems}
         clearable
         placeholder="Genres"
         valueComponent={(...e) => (
           <>
-            {!!genreSelection.length && (
+            {!!genres.length && (
               <span>
-                {genreSelection.length}{' '}
-                {genreSelection.length > 1 ? 'genres' : 'genre'} selected
+                {genres.length} {genres.length > 1 ? 'genres' : 'genre'}{' '}
+                selected
               </span>
             )}
           </>

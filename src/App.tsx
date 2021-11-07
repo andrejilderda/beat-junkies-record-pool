@@ -2,10 +2,9 @@ import React, { RefObject, useRef, useState } from 'react';
 import 'styled-components/macro';
 import { Virtuoso } from 'react-virtuoso';
 import 'react-h5-audio-player/lib/styles.css';
-import { unique } from './utils';
 import Track from './components/Track';
 import { useMantineColorScheme } from '@mantine/styles';
-import { ActionIcon, Group } from '@mantine/core';
+import { ActionIcon, Group, Loader } from '@mantine/core';
 import AudioPlayer from './components/AudioPlayer';
 import * as S from './App.styled';
 import useSelection, { PivotReducerState } from 'react-selection-hooks';
@@ -17,23 +16,30 @@ import Queue from './components/Queue';
 import SelectionBar from './components/SelectionBar';
 import AppName from './components/AppName';
 import Filters from './components/Filters';
-import useSearchField from './hooks/useSearchField';
 import useDb from './hooks/useDb';
 import useCrate from './hooks/useCrate';
 import useCrateFilter from './hooks/useCrateFilter';
+import SearchField from './components/SearchField';
+import useSearchField from './hooks/useSearchField';
 
 const getKey = (item: CrateItem) => item.id;
 
 function App() {
   const { toggleColorScheme } = useMantineColorScheme();
-  // UI state
   const [queueOpen, setQueueOpen] = useState(false);
-  const { value: searchQuery, onChange: onSearchChange } = useSearchField();
-  const [genres, setGenres] = useState<string[]>([]);
-  const [statusFilters, setStatusFilters] = useState<string[]>(['to-review']);
   const { data: db } = useDb();
-  const { isLoading, error, data: crate } = useCrate(searchQuery);
-  const filteredCrate = useCrateFilter(crate, db, statusFilters);
+  const { value: searchQuery, onChange: onSearchChange } = useSearchField();
+  const {
+    isLoading,
+    error,
+    data: crate,
+    genres: genreItems,
+  } = useCrate(searchQuery);
+  const {
+    filters,
+    dispatch: dispatchFilter,
+    filteredCrate,
+  } = useCrateFilter(crate, db);
 
   // selection
   const { selectedItems, selectAll, clearSelection, isSelected, onSelect } =
@@ -46,10 +52,6 @@ function App() {
   const [audioPlayerTrack, setAudioPlayerTrack] = useState<
     AudioPlayerTrack | undefined
   >(undefined);
-
-  const genreItems = Array.isArray(crate)
-    ? unique(crate?.map(item => item.genre || 'none')).sort()
-    : [];
 
   const onTrackChangeHandler: OnTrackChangeHandler = (e, track) => {
     if (audioPlayerTrack?.version === track.version) {
@@ -82,15 +84,33 @@ function App() {
             `}
           >
             <Group position="apart" spacing="md" withGutter>
+              <SearchField
+                value={searchQuery}
+                onChange={onSearchChange}
+                // prevent selecting all items when cmd + a
+                onKeyDown={e => e.stopPropagation()}
+                rightSection={
+                  isLoading ? (
+                    <Loader
+                      size="sm"
+                      color="blue"
+                      css={`
+                        margin-left: auto;
+                        padding-right: 10px;
+                      `}
+                    />
+                  ) : null
+                }
+              />
               <Filters
-                loading={isLoading}
-                onSearchChange={onSearchChange}
-                searchValue={searchQuery}
-                statusFilters={statusFilters}
-                onStatusFilterChange={setStatusFilters}
+                filters={filters}
+                onStatusFilterChange={value =>
+                  dispatchFilter({ type: 'setStatuses', value })
+                }
                 genreItems={genreItems}
-                genreSelection={genres}
-                onGenreChange={setGenres}
+                onGenreChange={value =>
+                  dispatchFilter({ type: 'setGenres', value })
+                }
               />
               <ActionIcon
                 size="lg"
