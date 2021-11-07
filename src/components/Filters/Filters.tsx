@@ -23,7 +23,7 @@ const Filters = ({
     <>
       <Styled.MultiSelect
         onChange={e => onStatusFilterChange(e)}
-        placeholder="Statuses"
+        placeholder="Filter by status"
         value={statuses}
         color="green"
         data={[
