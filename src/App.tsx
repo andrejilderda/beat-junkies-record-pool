@@ -29,8 +29,8 @@ function App() {
   // UI state
   const [queueOpen, setQueueOpen] = useState(false);
   const { value: searchQuery, onChange: onSearchChange } = useSearchField();
-  const [genres, setGenres] = useState<string[]>(['no-status']);
-  const [statusFilters, setStatusFilters] = useState<string[]>(['no-status']);
+  const [genres, setGenres] = useState<string[]>([]);
+  const [statusFilters, setStatusFilters] = useState<string[]>(['to-review']);
   const { data: db } = useDb();
   const { isLoading, error, data: crate } = useCrate(searchQuery);
   const filteredCrate = useCrateFilter(crate, db, statusFilters);
@@ -47,8 +47,8 @@ function App() {
     AudioPlayerTrack | undefined
   >(undefined);
 
-  const genreItems = Array.isArray(filteredCrate)
-    ? unique(filteredCrate?.map(item => item.genre || 'none')).sort()
+  const genreItems = Array.isArray(crate)
+    ? unique(crate?.map(item => item.genre || 'none')).sort()
     : [];
 
   const onTrackChangeHandler: OnTrackChangeHandler = (e, track) => {

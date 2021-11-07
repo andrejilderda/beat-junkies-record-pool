@@ -6,14 +6,14 @@ const useCrateFilter = (
   db: DbItem[] = [],
   statusFilters: string[] = []
 ): CrateItem[] => {
-  const statusesToFilter: string[] = ['reviewed', 'queue', 'downloaded', 'no-status'].filter(
+  const statusesToFilter: string[] = ['reviewed', 'queue', 'downloaded', 'to-review'].filter(
     status => !statusFilters.includes(status));
 
   const idsToFilter = db
     .filter(item => statusesToFilter.includes(item.status))
     .map(item => item.id)
 
-  const filterItemsWithNoStatus = statusesToFilter.includes('no-status');
+  const filterItemsWithNoStatus = statusesToFilter.includes('to-review');
 
   const items = crate.filter(item => !idsToFilter.includes(item.id));
   if (!filterItemsWithNoStatus) return items;

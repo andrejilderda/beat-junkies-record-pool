@@ -86,8 +86,8 @@ const Filters = ({
         color="green"
         data={[
           {
-            value: 'no-status',
-            label: 'No status',
+            value: 'to-review',
+            label: 'To review',
           },
           {
             value: 'reviewed',
