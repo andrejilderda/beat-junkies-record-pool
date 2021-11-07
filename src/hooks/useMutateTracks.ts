@@ -1,7 +1,5 @@
 // @ts-nocheck
-import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { DbItem } from '../types';
 import useMutateTrack, { TrackMutation } from './useMutateTrack';
 
 const useMutateTracks = () => {

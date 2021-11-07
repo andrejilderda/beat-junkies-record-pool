@@ -21,6 +21,7 @@ import useCrate from './hooks/useCrate';
 import useCrateFilter from './hooks/useCrateFilter';
 import SearchField from './components/SearchField';
 import useSearchField from './hooks/useSearchField';
+import { DirtyCleanPreference } from './components/Filters/Filters.types';
 
 const getKey = (item: CrateItem) => item.id;
 
@@ -110,6 +111,9 @@ function App() {
                 genreItems={genreItems}
                 onGenreChange={value =>
                   dispatchFilter({ type: 'setGenres', value })
+                }
+                onDirtyCleanPreferenceChange={(value: DirtyCleanPreference) =>
+                  dispatchFilter({ type: 'setDirtyCleanPreference', value })
                 }
               />
               <ActionIcon

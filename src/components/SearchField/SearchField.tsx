@@ -28,12 +28,16 @@ const SearchField = (props: SearchFieldProps) => (
         background: var(--gray-8);
         color: var(--gray-3);
 
-        &:placeholder {
+        &::placeholder {
           color: var(--gray-6);
         }
       }
 
       [data-theme='light'] & {
+        input::placeholder {
+          color: var(--gray-5);
+        }
+
         svg {
           color: var(--gray-4);
         }

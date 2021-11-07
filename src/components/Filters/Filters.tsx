@@ -1,63 +1,29 @@
-import { MultiSelect, SegmentedControl } from '@mantine/core';
-import styled from 'styled-components';
 import 'styled-components/macro';
-import { FilterState } from '../../hooks/useCrateFilter';
+import { DirtyCleanPreference, FilterState } from './Filters.types';
+import * as Styled from './Filters.styled';
 
 interface FiltersProps {
   filters: FilterState;
   onStatusFilterChange(value: string[]): void;
   genreItems: string[];
   onGenreChange(value: string[]): void;
+  onDirtyCleanPreferenceChange(value: string): void;
 }
-
-const StyledMultiSelect = styled(MultiSelect)`
-  margin-left: 8px;
-  min-width: 300px;
-
-  .mantine-MultiSelect-root {
-    background: var(--gray-8);
-    color: var(--gray-3);
-
-    &:placeholder {
-      color: var(--gray-6);
-    }
-  }
-
-  .mantine-MultiSelect-input {
-    padding-left: 6px;
-
-    [data-theme='light'] & {
-      background: var(--gray-7);
-      border: transparent;
-    }
-  }
-
-  .mantine-MultiSelect-value {
-    margin-right: 0;
-  }
-`;
-
-const StyledGenreSelect = styled(StyledMultiSelect)`
-  .mantine-MultiSelect-values {
-    padding-left: 12px;
-  }
-  span + span {
-    display: none;
-  }
-`;
 
 const Filters = ({
   filters,
   onStatusFilterChange,
   genreItems,
   onGenreChange,
+  onDirtyCleanPreferenceChange,
 }: FiltersProps) => {
   const { genres, statuses } = filters;
 
   return (
     <>
-      <StyledMultiSelect
+      <Styled.MultiSelect
         onChange={e => onStatusFilterChange(e)}
+        placeholder="Statuses"
         value={statuses}
         color="green"
         data={[
@@ -79,14 +45,14 @@ const Filters = ({
           },
         ]}
       />
-      <StyledGenreSelect
+      <Styled.GenreSelect
         onChange={e => onGenreChange(e)}
         value={genres}
         color="green"
         data={genreItems}
         clearable
         placeholder="Genres"
-        valueComponent={(...e) => (
+        valueComponent={() => (
           <>
             {!!genres.length && (
               <span>
@@ -96,6 +62,19 @@ const Filters = ({
             )}
           </>
         )}
+      />
+      <Styled.SegmentedControl
+        title="Filters out the dirty or clean version if both are available."
+        value={filters.dirtyCleanPreference}
+        size="xs"
+        onChange={(value: DirtyCleanPreference) =>
+          onDirtyCleanPreferenceChange(value)
+        }
+        data={[
+          { label: 'All', value: 'all' },
+          { label: 'Dirty', value: 'dirty' },
+          { label: 'Clean', value: 'clean' },
+        ]}
       />
     </>
   );

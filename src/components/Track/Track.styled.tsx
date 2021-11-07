@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Badge as MantineBadge, ThemeIcon as MantineThemeIcon } from '@mantine/core';
 

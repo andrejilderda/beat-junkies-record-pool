@@ -1,19 +1,11 @@
 import { Dispatch, useMemo, useReducer } from 'react';
 import { CrateItem, DbItem } from '../types';
+import { FilterState, FilterReducerAction, DirtyCleanPreference } from '../components/Filters/Filters.types';
 
-export interface FilterState {
-  statuses: string[];
-  genres: string[];
-}
-
-type FilterReducerAction =
-  | { type: 'setStatuses'; value: string[] }
-  | { type: 'setGenres'; value: string[] }
-  | { type: 'reset' };
-
-const initialFilterState = {
+const initialFilterState: FilterState = {
   statuses: ['to-review'],
   genres: [],
+  dirtyCleanPreference: 'dirty',
 };
 
 const filterReducer = (
@@ -31,6 +23,11 @@ const filterReducer = (
         ...state,
         genres: action.value,
       };
+    case 'setDirtyCleanPreference':
+      return {
+        ...state,
+        dirtyCleanPreference: action.value,
+      };
     case 'reset':
       return initialFilterState;
   }
@@ -39,6 +36,18 @@ const filterReducer = (
 const filterByGenre = (item: CrateItem, genres: string[]) => {
   if (!genres.length) return true;
   return genres.includes(item.genre);
+}
+
+const filterVersionsBasedOnDirtyCleanPreference = (item: CrateItem, pref: DirtyCleanPreference): CrateItem => {
+  if (pref === 'all') return item;
+  const hasCleanVersion = item.versions.some(version => version.tag?.toLowerCase().includes('clean'))
+  const hasDirtyVersion = item.versions.some(version => version.tag?.toLowerCase().includes('dirty'));
+  if (!(hasCleanVersion && hasDirtyVersion)) return item;
+
+  return {
+    ...item,
+    versions: item.versions.filter(version => version.tag?.toLowerCase().includes(pref))
+  };
 }
 
 const getFilteredCrate = (
@@ -57,7 +66,8 @@ const getFilteredCrate = (
 
   const items = crate
     .filter(item => !idsToFilter.includes(item.id))
-    .filter(item => filterByGenre(item, filters.genres));
+    .filter(item => filterByGenre(item, filters.genres))
+    .map(item => filterVersionsBasedOnDirtyCleanPreference(item, filters.dirtyCleanPreference))
 
   if (!filterItemsWithNoStatus) return items;
 

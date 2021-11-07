@@ -8,7 +8,7 @@ import {
 import styled from 'styled-components';
 import 'styled-components/macro';
 import { CSSTransition } from 'react-transition-group';
-import { CrateItem, DbItem } from '../../types';
+import { CrateItem } from '../../types';
 import useMutateTracks from '../../hooks/useMutateTracks';
 import { TrackMutation } from '../../hooks/useMutateTrack';
 
@@ -21,6 +21,7 @@ const StyledCSSTransition = styled(CSSTransition)`
   opacity: 0;
   transform: scale(0.975, 0.95);
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 3;
 
   &.transition-enter-active,
   &.transition-enter-done {

@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import AudioPlayer from 'react-h5-audio-player';
 

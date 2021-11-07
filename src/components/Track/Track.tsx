@@ -106,7 +106,7 @@ const Track = ({
         </S.Songwrapper>
         <S.Genre>{genre}</S.Genre>
         <S.VersionWrapper>
-          {versions?.length > 1 ? (
+          {versions?.length >= 1 ? (
             <ul>
               {versions.sort().map(version => (
                 <S.Badge
