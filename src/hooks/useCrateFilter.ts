@@ -50,8 +50,9 @@ const filterVersionsBasedOnDirtyCleanPreference = (item: CrateItem, pref: DirtyC
   };
 }
 
-const filterByStatus = (item: CrateItem, db: DbItem[], enabledStatusFilters: string[]) => {
-  if (!enabledStatusFilters.length) return item;
+const filterByStatus = (item: CrateItem, db: DbItem[], enabledStatusFilters: string[]): boolean => {
+  if (!enabledStatusFilters.length) return true;
+
   // here we invert the selection (the ones that need to be shown) into the
   // statuses that need to be filtered
   const statusesToFilter: string[] = ['reviewed', 'queue', 'downloaded', 'to-review'].filter(
@@ -69,14 +70,13 @@ const getFilteredCrate = (
   filters: FilterState
 ): CrateItem[] => {
 
-
   const items = crate
     .filter(item => filterByStatus(item, db, filters.statuses))
     .filter(item => filterByGenre(item, filters.genres))
     .map(item => filterVersionsBasedOnDirtyCleanPreference(item, filters.dirtyCleanPreference))
 
   const filterItemsWithNoStatus = !filters.statuses.includes('to-review')
-  if (!filterItemsWithNoStatus) return items;
+  if (!filterItemsWithNoStatus || !filters.statuses.length) return items;
 
   const itemsWithStatus = db.map(item => item.id);
   return items
