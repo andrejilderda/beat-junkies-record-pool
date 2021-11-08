@@ -107,38 +107,45 @@ const Track = ({
         <S.Genre>{genre}</S.Genre>
         <S.VersionWrapper>
           {versions?.length >= 1 ? (
-            <ul>
-              {versions.sort().map(version => (
-                <S.Badge
-                  key={version.id}
-                  style={{ paddingLeft: 0 }}
-                  size="lg"
-                  color="gray"
-                  $selected={selected}
-                  onClick={(e: React.MouseEvent<HTMLDivElement>) =>
-                    onPlayIconClick(e, version)
-                  }
-                  leftSection={
-                    <ActionIcon>
-                      {isPlaying &&
-                      version === currentAudioPlayerTrack?.version ? (
-                        <Pause weight="fill" size={12} />
-                      ) : (
-                        <Play weight="regular" size={12} />
-                      )}
-                    </ActionIcon>
-                  }
-                  $isPlaying={
-                    isPlaying && version === currentAudioPlayerTrack?.version
-                  }
-                >
-                  <label>
-                    {/* Replace only the first ( & ) in the string */}
-                    {version?.tag?.replace(/\(/, '').replace(/\)/, '') || ''}
-                  </label>
-                </S.Badge>
-              ))}
-            </ul>
+            <>
+              {versions.sort().map(version => {
+                if (!version?.tag?.trim()) return null;
+
+                return (
+                  <S.VersionItem key={version.id}>
+                    <S.Badge
+                      style={{ paddingLeft: 0 }}
+                      size="lg"
+                      color="gray"
+                      $selected={selected}
+                      onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                        onPlayIconClick(e, version)
+                      }
+                      leftSection={
+                        <ActionIcon>
+                          {isPlaying &&
+                          version === currentAudioPlayerTrack?.version ? (
+                            <Pause weight="fill" size={12} />
+                          ) : (
+                            <Play weight="regular" size={12} />
+                          )}
+                        </ActionIcon>
+                      }
+                      $isPlaying={
+                        isPlaying &&
+                        version === currentAudioPlayerTrack?.version
+                      }
+                    >
+                      <label>
+                        {/* Replace only the first ( & ) in the string */}
+                        {version?.tag?.replace(/\(/, '').replace(/\)/, '') ||
+                          ''}
+                      </label>
+                    </S.Badge>
+                  </S.VersionItem>
+                );
+              })}
+            </>
           ) : null}
         </S.VersionWrapper>
         <S.StyledSpotifyLogo href={`spotify:search:${artist} ${track}`}>

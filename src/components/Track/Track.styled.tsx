@@ -84,14 +84,19 @@ export const Genre = styled.div`
   font-size: 0.8rem;
 `;
 
-export const VersionWrapper = styled.div`
+export const VersionWrapper = styled.ul`
   color: var(--gray-5);
-
-  ul {
-    margin: 0;
-    padding: 0;
-  }
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 `;
+
+export const VersionItem = styled.li `
+  line-height: 1;
+`
 
 export const Badge = styled(MantineBadge)`
   background: var(--gray-8);
