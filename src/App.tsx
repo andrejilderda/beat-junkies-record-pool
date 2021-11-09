@@ -8,12 +8,7 @@ import { ActionIcon, Group, Loader } from '@mantine/core';
 import AudioPlayer from './components/AudioPlayer';
 import * as S from './App.styled';
 import useSelection, { PivotReducerState } from 'react-selection-hooks';
-import {
-  CrateItem,
-  HandleTrackChange,
-  AudioPlayerTrack,
-  OnNextPrevTrackHandler,
-} from './types';
+import { CrateItem } from './types';
 import H5AudioPlayer from 'react-h5-audio-player';
 import { Moon } from 'phosphor-react';
 import Keybindings from './components/Keybindings';

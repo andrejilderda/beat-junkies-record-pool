@@ -5,7 +5,6 @@ import useMutateTracks from '../../hooks/useMutateTracks';
 import { useNotifications } from '@mantine/notifications';
 import { CrateItem, OnNextPrevTrackHandler } from '../../types';
 import { Check } from 'phosphor-react';
-import { TrackMutation } from '../../hooks/useMutateTrack';
 
 interface KeybindingsProps {
   playerRef: React.MutableRefObject<H5AudioPlayer | undefined>;

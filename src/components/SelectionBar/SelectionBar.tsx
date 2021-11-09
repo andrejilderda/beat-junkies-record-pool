@@ -10,7 +10,6 @@ import 'styled-components/macro';
 import { CSSTransition } from 'react-transition-group';
 import { CrateItem } from '../../types';
 import useMutateTracks from '../../hooks/useMutateTracks';
-import { TrackMutation } from '../../hooks/useMutateTrack';
 
 interface SelectionBarProps {
   selection: CrateItem[];
