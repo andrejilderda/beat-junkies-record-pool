@@ -47,7 +47,7 @@ const Track = ({
   const updateStatus = (status: TrackMutation['status']) =>
     mutate({
       id,
-      ...(status !== 'remove' && {
+      ...(status !== 'reset' && {
         versions: versions.map(version => Number(version.id)),
         status,
       }),
@@ -77,7 +77,7 @@ const Track = ({
           <S.TrackButtonWrapper>
             <TrackButton
               isOn={isReviewed || isDownloaded}
-              onClick={() => updateStatus(isReviewed ? 'remove' : 'reviewed')}
+              onClick={() => updateStatus(isReviewed ? 'reset' : 'reviewed')}
               onIcon={
                 isReviewed ? (
                   <CheckCircle weight="fill" size={24} />
@@ -90,7 +90,7 @@ const Track = ({
             />
             <TrackButton
               isOn={isInQueue}
-              onClick={() => updateStatus(isInQueue ? 'remove' : 'queue')}
+              onClick={() => updateStatus(isInQueue ? 'reset' : 'queue')}
               onIcon={<MinusCircle weight="fill" size={24} />}
               offIcon={<PlusCircle weight="light" size={24} />}
               title={isInQueue ? 'Remove from queue' : 'Add to queue'}

@@ -103,7 +103,7 @@ const SelectionBar = ({ selection, clearSelection }: SelectionBarProps) => {
             Mark as downloaded
             <DownloadSimple size={20} />
           </StyledLink>
-          <StyledLink onClick={() => mutateStatus('remove', selection)}>
+          <StyledLink onClick={() => mutateStatus('reset', selection)}>
             Reset status
             <ProhibitInset size={20} />
           </StyledLink>

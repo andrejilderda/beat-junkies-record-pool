@@ -86,8 +86,8 @@ const Keybindings = ({
     e.preventDefault();
   });
 
-  useHotkeys(['Control+Backspace', 'Meta+Backspace'], e => {
-    mutateStatus('remove', selection);
+  useHotkeys(['Control+Backspace', 'Meta+Backspace', 'Backspace'], e => {
+    mutateStatus('reset', selection);
     showNotification('reset');
     e.preventDefault();
   });

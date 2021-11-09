@@ -4,7 +4,7 @@ import { DbItem } from '../types';
 export interface TrackMutation {
   id: number;
   versions?: number[];
-  status?: DbItem['status'] | 'remove';
+  status?: DbItem['status'] | 'reset';
   invalidateDb?: boolean;
 }
 
@@ -22,7 +22,7 @@ const useMutateTrack = () => {
       method: 'DELETE',
     });
 
-    if (!versions || !status || status === 'remove') return deleteMutation();
+    if (!versions || !status || status === 'reset') return deleteMutation();
 
     await deleteMutation();
 

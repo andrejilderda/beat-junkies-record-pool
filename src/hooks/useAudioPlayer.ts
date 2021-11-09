@@ -4,6 +4,7 @@ import { AudioPlayerTrack, CrateItem, HandleTrackChange, OnNextPrevTrackHandler 
 
 const useAudioPlayer = (playerRef: React.MutableRefObject<H5AudioPlayer | undefined>, filteredCrate: CrateItem[]) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoadingTrack, setIsLoadingTrack] = useState(false);
   const [audioPlayerTrack, setAudioPlayerTrack] = useState<
     AudioPlayerTrack | undefined
   >(undefined);
@@ -31,7 +32,9 @@ const useAudioPlayer = (playerRef: React.MutableRefObject<H5AudioPlayer | undefi
     setIsPlaying,
     audioPlayerTrack,
     onNextPrevTrackHandler,
-    handleTrackChange
+    handleTrackChange,
+    isLoadingTrack,
+    setIsLoadingTrack,
   }
 }
 
