@@ -29,8 +29,13 @@ const Queue = ({ setOpen, queue, ...props }: QueueProps) => {
   const hasItemsInQueue = !!data?.length;
   const downloadList =
     data
-      ?.map(
-        item => `https://beatjunkies.com/download/?idattachment=${item.id}\n`,
+      ?.map(item =>
+        item.versions
+          .map(
+            version =>
+              `https://beatjunkies.com/download/?idattachment=${version}\n`,
+          )
+          .join(''),
       )
       .join('') ||
     'The download queue is empty. \nClick the + to add items to the queue.';
