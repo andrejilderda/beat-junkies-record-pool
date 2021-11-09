@@ -68,18 +68,7 @@ const StyledWrapper = styled.div`
 `;
 
 const SelectionBar = ({ selection, clearSelection }: SelectionBarProps) => {
-  const { mutate } = useMutateTracks();
-
-  const handleMutate = (status: TrackMutation['status']) => {
-    const tracks = selection.map(({ id, versions }) => {
-      return {
-        id,
-        versions: versions.map(version => Number(version.id)),
-      };
-    });
-
-    mutate({ tracks, status });
-  };
+  const { mutateStatus } = useMutateTracks();
 
   return (
     <StyledCSSTransition
@@ -103,19 +92,19 @@ const SelectionBar = ({ selection, clearSelection }: SelectionBarProps) => {
           >
             {selection.length} items selected:
           </span>
-          <StyledLink onClick={() => handleMutate('queue')}>
+          <StyledLink onClick={() => mutateStatus('queue', selection)}>
             Add to queue
             <PlusCircle weight="fill" size={20} />
           </StyledLink>
-          <StyledLink onClick={() => handleMutate('reviewed')}>
+          <StyledLink onClick={() => mutateStatus('reviewed', selection)}>
             Mark as reviewed
             <CheckCircle weight="fill" size={20} />
           </StyledLink>
-          <StyledLink onClick={() => handleMutate('downloaded')}>
+          <StyledLink onClick={() => mutateStatus('downloaded', selection)}>
             Mark as downloaded
             <DownloadSimple size={20} />
           </StyledLink>
-          <StyledLink onClick={() => handleMutate('remove')}>
+          <StyledLink onClick={() => mutateStatus('remove', selection)}>
             Reset status
             <ProhibitInset size={20} />
           </StyledLink>

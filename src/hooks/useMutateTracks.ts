@@ -6,7 +6,7 @@ const useMutateTracks = () => {
   const { mutateAsync } = useMutateTrack();
   const queryClient = useQueryClient();
 
-  return useMutation<
+  const { mutate, ...useMutationResult } = useMutation<
     unknown,
     unknown,
     { tracks: TrackMutation[], status: TrackMutation['status'] }
@@ -26,6 +26,23 @@ const useMutateTracks = () => {
       queryClient.invalidateQueries('db');
     }
   });
+
+  const mutateStatus = (status: TrackMutation['status'], selection: CrateItem[]) => {
+    const tracks = selection.map(({ id, versions }) => {
+      return {
+        id,
+        versions: versions.map(version => Number(version.id)),
+      };
+    });
+
+    mutate({ tracks, status });
+  };
+
+  return {
+    mutate,
+    mutateStatus,
+    ...useMutationResult,
+  }
 }
 
 export default useMutateTracks;

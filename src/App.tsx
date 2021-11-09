@@ -76,6 +76,7 @@ function App() {
         clearSelection={clearSelection}
         selectAll={selectAll}
         playPrevNextTrack={onNextPrevTrackHandler}
+        selection={selectedItems}
       />
       <S.Layout>
         <div
