@@ -12,7 +12,7 @@ import {
 import {
   CrateItem,
   Version,
-  OnTrackChangeHandler,
+  HandleTrackChange,
   DbItem,
   AudioPlayerTrack,
 } from '../../types';
@@ -21,7 +21,7 @@ import useMutateTrack, { TrackMutation } from '../../hooks/useMutateTrack';
 import TrackButton from '../TrackButton';
 
 interface TrackProps extends CrateItem {
-  onTrackChangeHandler: OnTrackChangeHandler;
+  onTrackChange: HandleTrackChange;
   selected: boolean;
   onClick: React.MouseEventHandler<HTMLDivElement> | undefined;
   isPlaying: boolean;
@@ -37,7 +37,7 @@ const Track = ({
   id,
   selected,
   onClick,
-  onTrackChangeHandler,
+  onTrackChange,
   isPlaying,
   currentAudioPlayerTrack,
   dbStatus,
@@ -58,7 +58,7 @@ const Track = ({
     version: Version = versions[0],
   ) => {
     e.stopPropagation();
-    onTrackChangeHandler(e, { id, version });
+    onTrackChange(e, { id, version });
   };
 
   const isInQueue = dbStatus?.status === 'queue';

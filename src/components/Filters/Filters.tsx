@@ -64,7 +64,7 @@ const Filters = ({
         )}
       />
       <Styled.SegmentedControl
-        title="Select which version you prefer. This will filter out the other version when both a dirty and a clean version is available."
+        title="Select which version you prefer. This will filter out the other version, but only when both a dirty and a clean version is available."
         value={filters.dirtyCleanPreference}
         size="xs"
         onChange={(value: DirtyCleanPreference) =>

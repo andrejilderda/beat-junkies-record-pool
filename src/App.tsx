@@ -8,7 +8,12 @@ import { ActionIcon, Group, Loader } from '@mantine/core';
 import AudioPlayer from './components/AudioPlayer';
 import * as S from './App.styled';
 import useSelection, { PivotReducerState } from 'react-selection-hooks';
-import { CrateItem, OnTrackChangeHandler, AudioPlayerTrack } from './types';
+import {
+  CrateItem,
+  HandleTrackChange,
+  AudioPlayerTrack,
+  OnNextPrevTrackHandler,
+} from './types';
 import H5AudioPlayer from 'react-h5-audio-player';
 import { Moon } from 'phosphor-react';
 import Keybindings from './components/Keybindings';
@@ -53,8 +58,18 @@ function App() {
   const [audioPlayerTrack, setAudioPlayerTrack] = useState<
     AudioPlayerTrack | undefined
   >(undefined);
+  const onNextPrevTrackHandler: OnNextPrevTrackHandler = prevNext => {
+    const trackIndex = filteredCrate.findIndex(
+      item => item.id === audioPlayerTrack?.id,
+    );
+    const nextTrackId = prevNext === 'prev' ? trackIndex - 1 : trackIndex + 1;
+    const nextTrack = filteredCrate[nextTrackId];
+    if (!nextTrack) return;
+    const { id, versions } = nextTrack;
+    setAudioPlayerTrack({ id, version: versions[0] });
+  };
 
-  const onTrackChangeHandler: OnTrackChangeHandler = (e, track) => {
+  const handleTrackChange: HandleTrackChange = (e, track) => {
     if (audioPlayerTrack?.version === track.version) {
       playerRef.current?.togglePlay(e);
       setIsPlaying(prevState => !prevState);
@@ -70,6 +85,7 @@ function App() {
         playerRef={playerRef}
         clearSelection={clearSelection}
         selectAll={selectAll}
+        playPrevNextTrack={onNextPrevTrackHandler}
       />
       <S.Layout>
         <div
@@ -150,7 +166,7 @@ function App() {
               <Track
                 key={item.id}
                 onClick={(e: any) => onSelect(item, e)}
-                onTrackChangeHandler={onTrackChangeHandler}
+                onTrackChange={handleTrackChange}
                 selected={isSelected(item)}
                 isPlaying={
                   isPlaying &&
@@ -175,6 +191,8 @@ function App() {
           customAdditionalControls={[]}
           onPause={() => setIsPlaying(false)}
           onPlaying={() => setIsPlaying(true)}
+          onClickNext={() => onNextPrevTrackHandler('next')}
+          onClickPrevious={() => onNextPrevTrackHandler('prev')}
           layout="horizontal-reverse"
           progressJumpSteps={{ forward: 15000, backward: 15000 }}
           showSkipControls={true}

@@ -27,4 +27,6 @@ export interface AudioPlayerTrack {
   version: Version | undefined;
 }
 
-export type OnTrackChangeHandler = (e: React.MouseEvent, track: AudioPlayerTrack) => void;
+export type HandleTrackChange = (e: React.MouseEvent, track: AudioPlayerTrack) => void;
+
+export type OnNextPrevTrackHandler = (prevNext: 'prev' | 'next') => void;
