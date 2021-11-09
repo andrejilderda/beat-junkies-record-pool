@@ -27,12 +27,15 @@ import useCrateFilter from './hooks/useCrateFilter';
 import SearchField from './components/SearchField';
 import useSearchField from './hooks/useSearchField';
 import { DirtyCleanPreference } from './components/Filters/Filters.types';
+import useAudioPlayer from './hooks/useAudioPlayer';
 
 const getKey = (item: CrateItem) => item.id;
 
 function App() {
   const { toggleColorScheme } = useMantineColorScheme();
   const [queueOpen, setQueueOpen] = useState(false);
+
+  // crate + database + filters
   const { data: db } = useDb();
   const { value: searchQuery, onChange: onSearchChange } = useSearchField();
   const {
@@ -52,29 +55,16 @@ function App() {
     useSelection<CrateItem, PivotReducerState<CrateItem>>(filteredCrate || [], {
       getKey,
     });
-  // audio player
-  const [isPlaying, setIsPlaying] = useState(false);
-  const playerRef = useRef<H5AudioPlayer>();
-  const [audioPlayerTrack, setAudioPlayerTrack] = useState<
-    AudioPlayerTrack | undefined
-  >(undefined);
-  const onNextPrevTrackHandler: OnNextPrevTrackHandler = prevNext => {
-    const trackIndex = filteredCrate.findIndex(
-      item => item.id === audioPlayerTrack?.id,
-    );
-    const nextTrackId = prevNext === 'prev' ? trackIndex - 1 : trackIndex + 1;
-    const nextTrack = filteredCrate[nextTrackId];
-    if (!nextTrack) return;
-    const { id, versions } = nextTrack;
-    setAudioPlayerTrack({ id, version: versions[0] });
-  };
 
-  const handleTrackChange: HandleTrackChange = (e, track) => {
-    if (audioPlayerTrack?.version === track.version) {
-      playerRef.current?.togglePlay(e);
-      setIsPlaying(prevState => !prevState);
-    } else setAudioPlayerTrack(track);
-  };
+  // audioplayer
+  const playerRef = useRef<H5AudioPlayer>();
+  const {
+    isPlaying,
+    setIsPlaying,
+    audioPlayerTrack,
+    onNextPrevTrackHandler,
+    handleTrackChange,
+  } = useAudioPlayer(playerRef, filteredCrate);
 
   if (error)
     return <>An error has occurred while fetching tracks: {error.message}</>;
