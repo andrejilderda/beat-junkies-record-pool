@@ -65,10 +65,10 @@ export const Title = styled.div<{ $isPlaying: boolean }>`
 
   ${({ $isPlaying }) =>
     $isPlaying && `
-      color: var(--green-5)
+      color: var(--green-5);
 
       [data-theme='light'] {
-        color: var(--green-7)
+        color: var(--green-7);
       }
   `}
 `;
