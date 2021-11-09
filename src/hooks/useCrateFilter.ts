@@ -44,9 +44,11 @@ const filterVersionsBasedOnDirtyCleanPreference = (item: CrateItem, pref: DirtyC
   const hasDirtyVersion = item.versions.some(version => version.tag?.toLowerCase().includes('dirty'));
   if (!(hasCleanVersion && hasDirtyVersion)) return item;
 
+  const versionToFilter = pref === 'clean' ? 'dirty' : 'clean';
+
   return {
     ...item,
-    versions: item.versions.filter(version => version.tag?.toLowerCase().includes(pref))
+    versions: item.versions.filter(version => !version.tag?.toLowerCase().includes(versionToFilter))
   };
 }
 
