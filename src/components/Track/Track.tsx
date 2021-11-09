@@ -27,6 +27,7 @@ interface TrackProps extends CrateItem {
   isPlaying: boolean;
   currentAudioPlayerTrack: AudioPlayerTrack | undefined;
   dbStatus: DbItem | undefined;
+  isLoadingTrack: boolean;
 }
 
 const Track = ({
@@ -41,6 +42,7 @@ const Track = ({
   isPlaying,
   currentAudioPlayerTrack,
   dbStatus,
+  isLoadingTrack,
 }: TrackProps) => {
   const { mutate } = useMutateTrack();
 
@@ -97,7 +99,13 @@ const Track = ({
             />
           </S.TrackButtonWrapper>
           <S.PlayIcon onClick={e => onPlayIconClick(e)} size="lg" radius="lg">
-            {isPlaying ? <Pause /> : <Play />}
+            {isPlaying ? (
+              <Pause />
+            ) : isLoadingTrack ? (
+              <S.Loader size="xs" />
+            ) : (
+              <Play />
+            )}
           </S.PlayIcon>
           <div>
             <S.Title $isPlaying={isPlaying}>{track}</S.Title>
@@ -148,9 +156,9 @@ const Track = ({
             </>
           ) : null}
         </S.VersionWrapper>
-        <S.StyledSpotifyLogo href={`spotify:search:${artist} ${track}`}>
+        <S.SpotifyLogo href={`spotify:search:${artist} ${track}`}>
           <SpotifyLogo size={24} weight="thin" />
-        </S.StyledSpotifyLogo>
+        </S.SpotifyLogo>
       </S.Wrapper>
     </>
   );

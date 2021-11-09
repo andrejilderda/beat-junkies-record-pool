@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Badge as MantineBadge, ThemeIcon as MantineThemeIcon } from '@mantine/core';
+import { Badge as MantineBadge, ThemeIcon as MantineThemeIcon, Loader as MantineLoader } from '@mantine/core';
 
 interface WrapperProps {
   selected: boolean;
@@ -47,6 +47,16 @@ export const Wrapper = styled.div<WrapperProps>`
 export const PlayIcon = styled(MantineThemeIcon)`
   margin-right: 16px;
   align-self: center;
+`;
+
+export const Loader = styled(MantineLoader)`
+  path {
+    stroke: var(--green-2);
+  }
+
+  circle {
+    stroke: var(--green-5);
+  }
 `;
 
 export const Songwrapper = styled.div`
@@ -145,7 +155,7 @@ export const Badge = styled(MantineBadge)`
   }
 `
 
-export const StyledSpotifyLogo = styled.a`
+export const SpotifyLogo = styled.a`
   cursor: default;
   color: var(--gray-5);
   display: block;

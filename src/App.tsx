@@ -56,6 +56,8 @@ function App() {
   const {
     isPlaying,
     setIsPlaying,
+    isLoadingTrack,
+    setIsLoadingTrack,
     audioPlayerTrack,
     onNextPrevTrackHandler,
     handleTrackChange,
@@ -154,6 +156,12 @@ function App() {
                 onClick={(e: any) => onSelect(item, e)}
                 onTrackChange={handleTrackChange}
                 selected={isSelected(item)}
+                isLoadingTrack={
+                  isLoadingTrack &&
+                  !!item.versions.find(
+                    item => item.id === audioPlayerTrack?.version?.id,
+                  )
+                }
                 isPlaying={
                   isPlaying &&
                   !!item.versions.find(
@@ -179,6 +187,8 @@ function App() {
           onPlaying={() => setIsPlaying(true)}
           onClickNext={() => onNextPrevTrackHandler('next')}
           onClickPrevious={() => onNextPrevTrackHandler('prev')}
+          onLoadStart={() => setIsLoadingTrack(true)}
+          onLoadedData={() => setIsLoadingTrack(false)}
           layout="horizontal-reverse"
           progressJumpSteps={{ forward: 15000, backward: 15000 }}
           showSkipControls={true}
