@@ -1,61 +1,62 @@
-# Getting Started with Create React App
+# Beat Junkies Record Pool manager
 
-This project was bootstrapped with
-[Create React App](https://github.com/facebook/create-react-app).
+A niche webapp to navigate and manage your
+[Beat Junkies record pool](https://www.beatjunkies.com/record-pool/) library.
 
-## Available Scripts
+<img title="Beat Junkies Record Pool" src="https://user-images.githubusercontent.com/487182/141512226-0444e9ff-e4b9-48a1-bae3-790d0a57ff65.gif" width="600"  />
 
-In the project directory, you can run:
+## Features
 
-### `yarn start`
+- 🔎 Search by title and filter by genre + clean/dirty tracks\*
+- 🗃️ Mark tracks as 'reviewed', 'queued' or 'downloaded' for easy management
+- 📥 Copy URL's of queued tracks for batch downloading\*\*
+- ⌨️ Keyboard shortcuts
+- 💿 Quick link to Spotify search
+- 🔅 Dark & light mode
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+\* Will filter out the other version when both a dirty and a clean version is
+available.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+\*\* You may want to use a download manager that accepts a list of links
+[like this one](https://addons.mozilla.org/en-US/firefox/addon/multithreaded-download-manager/).
 
-### `yarn test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests)
-for more information.
+_This guide requires you have [Node](https://nodejs.org/en/download/) and
+[npm](https://docs.npmjs.com/cli/install/) installed._
 
-### `yarn build`
+- Clone/download this repo and navigate to the folder in your CLI.
+- Install the dependencies by running `npm install`.
+- Start the server by running `npm run start`.
+- Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best
-performance.
+## How to use
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Add tracks to the download queue or mark as reviewed by using the buttons next
+to the track. The download queue you can access via the top right icon where you
+can copy the download links and mark the items as downloaded.
 
-See the section about
-[deployment](https://facebook.github.io/create-react-app/docs/deployment) for
-more information.
+### Keyboard shortcuts
 
-### `yarn eject`
+You can quickly navigate through the library using the following keyboard
+shortcuts:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+| Action                       | Shortcut                                             |
+| ---------------------------- | ---------------------------------------------------- |
+| Play/pause current track     | <kbd>Space</kbd>                                     |
+| Select all                   | <kbd>Cmd/Ctrl</kbd>+<kbd>a</kbd>                     |
+| Clear selection              | <kbd>Cmd/Ctrl</kbd>+<kbd>d</kbd> / <kbd>Escape</kbd> |
+| Skip 15 sec.                 | <kbd>]</kbd>                                         |
+| Rewind 15 sec.               | <kbd>[</kbd>                                         |
+| Play previous track          | <kbd>Cmd/Ctrl</kbd>+<kbd>←</kbd>                     |
+| Play next track              | <kbd>Cmd/Ctrl</kbd>+<kbd>→</kbd>                     |
+| Add selection to queue       | <kbd>q</kbd>                                         |
+| Mark selection as reviewed   | <kbd>r</kbd>                                         |
+| Mark selection as downloaded | <kbd>d</kbd>                                         |
+| Reset selection              | <kbd>Backspace</kbd>                                 |
 
-If you aren’t satisfied with the build tool and configuration choices, you can
-`eject` at any time. This command will remove the single build dependency from
-your project.
+## Scraping
 
-Instead, it will copy all the configuration files and the transitive
-dependencies (webpack, Babel, ESLint, etc) right into your project so you have
-full control over them. All of the commands except `eject` will still work, but
-they will point to the copied scripts so you can tweak them. At this point
-you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for
-small and middle deployments, and you shouldn’t feel obligated to use this
-feature. However we understand that this tool wouldn’t be useful if you couldn’t
-customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The data is stored locally in `crate.json`. Since accessing the Record Pool
+requires authentication the scraping is done client-side via a simple script
+which can be found [here](./src/scraper.js).
