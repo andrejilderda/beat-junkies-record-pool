@@ -124,11 +124,11 @@ function App() {
                 size="lg"
                 variant="filled"
                 onClick={() => toggleColorScheme()}
+                title="Switch between light/dark mode"
               >
                 <Moon size={20} />
               </ActionIcon>
               <Queue
-                // title="Download queue"
                 opened={queueOpen}
                 queue={selectedItems}
                 setOpen={setQueueOpen}
@@ -189,6 +189,7 @@ function App() {
           onClickPrevious={() => onNextPrevTrackHandler('prev')}
           onLoadStart={() => setIsLoadingTrack(true)}
           onLoadedData={() => setIsLoadingTrack(false)}
+          onEnded={() => onNextPrevTrackHandler('next')}
           layout="horizontal-reverse"
           progressJumpSteps={{ forward: 15000, backward: 15000 }}
           showSkipControls={true}

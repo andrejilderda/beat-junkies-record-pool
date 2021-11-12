@@ -122,7 +122,12 @@ const Queue = ({ setOpen, queue, ...props }: QueueProps) => {
         </Code>
       </Drawer>
 
-      <ActionIcon size="lg" variant="filled" onClick={() => setOpen(true)}>
+      <ActionIcon
+        size="lg"
+        variant="filled"
+        onClick={() => setOpen(true)}
+        title="Download queue"
+      >
         <ArchiveBox size={20} />
       </ActionIcon>
     </>
