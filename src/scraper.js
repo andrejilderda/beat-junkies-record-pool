@@ -1,6 +1,12 @@
+// set to 0 for first time scrape
+const lastIdFetched = 43125;
+const scrapeTillPage = 3;
+
+// using `scrapeTillPage` is more reliable, since there can be multiple updates on one day that might overlap 2 pages
+const lastFetchedDate = '2021-10-10T22:00:00.000Z';
+
 // @ts-nocheck
 function scrapePage() {
-  const scrapeTillPage = Infinity;
   const nextLink = document.querySelector('.nextpostslink');
   const pageNr = document.location.href
     .replace(/https:\/\/(www\.)?beatjunkies\.com\/record-pool\//g, '')
@@ -19,11 +25,25 @@ function scrapePage() {
 
   console.log(`Scraping page ${pageNr}`);
   const prevTracks = JSON.parse(window.localStorage.getItem('tracks')) || [];
-  const mergedTracks = prevTracks.concat(getTrackInfo());
+  const newTracks = getTrackInfo().filter(item =>
+    filterPrevDownloadedTracks(item, lastFetchedDate),
+  );
+  const mergedTracks = prevTracks.concat(newTracks);
   window.localStorage.setItem('tracks', JSON.stringify(mergedTracks));
 
-  if (Number(pageNr) === Number(scrapeTillPage) || !nextLink)
-    return onFinish(mergedTracks);
+  const dateRows = Array.from(
+    document.querySelectorAll('#record-pool-table tbody tr:not([class])'),
+  );
+  const dates = dateRows.map(row => new Date(row.textContent.trim()).getTime());
+  const hasReachedLastFetchedDate = !!dates.find(
+    date => date < new Date(lastFetchedDate).getTime(),
+  );
+
+  const isOnLastPage =
+    Number(pageNr) === Number(scrapeTillPage) ||
+    hasReachedLastFetchedDate ||
+    !nextLink;
+  if (isOnLastPage) return onFinish(mergedTracks);
   nextLink.click();
 }
 
@@ -34,7 +54,7 @@ function onFinish(data) {
   // reverse tracks + add id's
   const finalizedData = data
     .reverse()
-    .map((item, index) => ({ ...item, id: index }));
+    .map((item, index) => ({ ...item, id: lastIdFetched + index + 1 }));
   saveAs(
     new Blob(
       [
@@ -137,4 +157,11 @@ function getPreviousSibling(elem, selector) {
     if (sibling.matches(selector)) return sibling;
     sibling = sibling.previousElementSibling;
   }
+}
+
+function filterPrevDownloadedTracks(track, lastFetchedDate) {
+  const lastFetchedTime = new Date(lastFetchedDate).getTime();
+  const { dateAdded } = track;
+  if (new Date(dateAdded).getTime() >= lastFetchedTime) return true;
+  return false;
 }
