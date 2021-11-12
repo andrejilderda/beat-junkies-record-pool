@@ -99,10 +99,10 @@ const Track = ({
             />
           </S.TrackButtonWrapper>
           <S.PlayIcon onClick={e => onPlayIconClick(e)} size="lg" radius="lg">
-            {isPlaying ? (
-              <Pause />
-            ) : isLoadingTrack ? (
+            {isLoadingTrack ? (
               <S.Loader size="xs" />
+            ) : isPlaying ? (
+              <Pause />
             ) : (
               <Play />
             )}
